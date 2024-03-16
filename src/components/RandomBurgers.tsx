@@ -7,8 +7,8 @@ const RandomBurgers = () => {
       <div className='flex flex-col gap-2 mt-4'>
         {Array(2)
           .fill("ed")
-          .map((item) => (
-            <ProductSnippet />
+          .map((item, i) => (
+            <ProductSnippet key={i} />
           ))}
       </div>
     </div>

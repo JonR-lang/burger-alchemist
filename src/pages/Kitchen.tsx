@@ -14,7 +14,7 @@ const Kitchen = () => {
         <RandomBurgers />
       </div>
       <div className='flex-1'>
-        <div className='bg-white p-2 rounded'>
+        <div className='bg-white py-1 px-2 rounded'>
           <SortBy />
         </div>
       </div>

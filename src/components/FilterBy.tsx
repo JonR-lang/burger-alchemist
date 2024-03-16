@@ -1,3 +1,5 @@
+import { Checkbox } from "@/components/ui/checkbox";
+
 const FilterBy = () => {
   return (
     <div className='bg-white rounded-lg p-2'>
@@ -5,13 +7,13 @@ const FilterBy = () => {
       <div className='mt-4'>
         <h4 className='text-sm font-semibold'>Availability</h4>
         <div className='flex items-center gap-1 mt-1'>
-          <input type='checkbox' name='in-stock' id='in-stock' />
+          <Checkbox id='in-stock' />
           <label htmlFor='in-stock' className='text-sm text-zinc-500 lowercase'>
             In Stock
           </label>
         </div>
         <div className='flex items-center gap-1 mt-1'>
-          <input type='checkbox' name='out-of-stock' id='out-of-stock' />
+          <Checkbox id='out-of-stock' />
           <label
             htmlFor='out-of-stock'
             className='text-sm text-zinc-500 lowercase'>
@@ -49,19 +51,19 @@ const FilterBy = () => {
       <div className='mt-4'>
         <h4 className='text-sm font-semibold'>Size</h4>
         <div className='flex items-center gap-1 mt-1'>
-          <input type='checkbox' name='small' id='small' />
+          <Checkbox id='small' />
           <label htmlFor='small' className='text-sm text-zinc-500'>
             small
           </label>
         </div>
         <div className='flex items-center gap-1 mt-1'>
-          <input type='checkbox' name='medium' id='medium' />
+          <Checkbox id='medium' />
           <label htmlFor='medium' className='text-sm text-zinc-500'>
             medium
           </label>
         </div>
         <div className='flex items-center gap-1 mt-1'>
-          <input type='checkbox' name='large' id='large' />
+          <Checkbox id='large' />
           <label htmlFor='large' className='text-sm text-zinc-500'>
             large
           </label>
