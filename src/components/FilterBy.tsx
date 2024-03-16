@@ -8,7 +8,9 @@ const FilterBy = () => {
         <h4 className='text-sm font-semibold'>Availability</h4>
         <div className='flex items-center gap-1 mt-1'>
           <Checkbox id='in-stock' />
-          <label htmlFor='in-stock' className='text-sm text-zinc-500 lowercase'>
+          <label
+            htmlFor='in-stock'
+            className='text-sm cursor-pointer text-zinc-500 lowercase'>
             In Stock
           </label>
         </div>
@@ -16,7 +18,7 @@ const FilterBy = () => {
           <Checkbox id='out-of-stock' />
           <label
             htmlFor='out-of-stock'
-            className='text-sm text-zinc-500 lowercase'>
+            className='text-sm cursor-pointer text-zinc-500 lowercase'>
             Out of Stock
           </label>
         </div>
@@ -52,19 +54,25 @@ const FilterBy = () => {
         <h4 className='text-sm font-semibold'>Size</h4>
         <div className='flex items-center gap-1 mt-1'>
           <Checkbox id='small' />
-          <label htmlFor='small' className='text-sm text-zinc-500'>
+          <label
+            htmlFor='small'
+            className='text-sm text-zinc-500 cursor-pointer'>
             small
           </label>
         </div>
         <div className='flex items-center gap-1 mt-1'>
           <Checkbox id='medium' />
-          <label htmlFor='medium' className='text-sm text-zinc-500'>
+          <label
+            htmlFor='medium'
+            className='text-sm text-zinc-500 cursor-pointer'>
             medium
           </label>
         </div>
         <div className='flex items-center gap-1 mt-1'>
           <Checkbox id='large' />
-          <label htmlFor='large' className='text-sm text-zinc-500'>
+          <label
+            htmlFor='large'
+            className='text-sm text-zinc-500 cursor-pointer'>
             large
           </label>
         </div>
