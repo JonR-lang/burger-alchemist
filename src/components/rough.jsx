@@ -1,31 +1,46 @@
-<img
-  src={Burger}
-  alt='product-image'
-  className='group-hover:ease-in-out transition duration-700 group-hover:duration-1000 cursor-pointer object-center object-cover group-hover:scale-110 sm:group-hover:scale-150 w-16 sm:w-28 aspect-square rotate-0 group-hover:-transl group-hover:-skew-y-12 group-hover:skew-x-12 bg-red-400'
-/>;
-<p className='font-semibold text-lg sm:text-xl relative after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:absolute after:origin-bottom-left after:transform after:ease-in-out after:duration-500 cursor-pointer w-full after:w-full group-hover:after:scale-x-100 group-hover:after:origin-bottom-left after:bg-lime-600 dark:after:bg-lime-500 text-gray-600 dark:text-lime-500'>
-  3D Animation
-</p>;
+<div className='grid grid-cols-2 gap-3'>
+  <div className='flex flex-col'>
+    <label htmlFor='name' className='text-xs text-zinc-400 font-semibold'>
+      Your Name
+    </label>
+    <input
+      className='bg-transparent focus:outline-none border-b border-b-zinc-200 py-1'
+      type='text'
+      id='name'
+    />
+  </div>
 
-<div className='flex flex-col gap-1 flex-[2] '>
-  <h2 className='text-xl font-bold md:-mb-2'>Featured</h2>
-  <small className='text-zinc-300'>
-    Check out the list of featured products!
-  </small>
+  <div className='flex flex-col'>
+    <label
+      htmlFor='email'
+      className='text-xs text-zinc-400 font-semibold  hover:text-red-400'>
+      Your Email
+    </label>
+    <input
+      className='bg-transparent border-b border-b-zinc-200 py-1 peer'
+      type='text'
+      id='email'
+    />
+  </div>
 
-  <div
-    id='horizontal-scroll-bar'
-    className='overflow-x-auto
-   md:overflow-x-visible pb-4 md:p-0 w-full'>
-    <Featured />
+  <div className='col-span-full flex flex-col'>
+    <label htmlFor='subject' className='text-xs text-zinc-400 font-semibold'>
+      Your Subject
+    </label>
+    <input
+      className='bg-transparent focus:outline-none border-b border-b-zinc-200 py-1'
+      type='text'
+      id='subject'
+    />
+  </div>
+
+  <div className='col-span-full flex flex-col'>
+    <label htmlFor='message' className='text-xs text-zinc-400 font-semibold'>
+      Your Message
+    </label>
+    <textarea
+      id='message'
+      className='bg-transparent focus:outline-none border-b border-b-zinc-200 py-1'
+    />
   </div>
 </div>;
-
-"Dairy-Free",
-  "Spicy",
-  "Gluten-Free",
-  "Keto-Friendly",
-  "Vegan",
-  "Dairy",
-  "Organic",
-  "Low-Carb";

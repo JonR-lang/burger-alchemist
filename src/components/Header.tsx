@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Navbar from "./Navbar";
-import HamburgerIcon from "../assets/hamburger-icon-2.png";
+
+import { TbShoppingBag } from "react-icons/tb";
 import { FaHamburger } from "react-icons/fa";
-import { FaOpencart } from "react-icons/fa";
 import { PiHamburgerLight } from "react-icons/pi";
 import { IoCloseOutline } from "react-icons/io5";
 import { CiHeart, CiSearch } from "react-icons/ci";
@@ -31,19 +32,19 @@ const Header = () => {
       <figure className='h-full absolute top-0 left-0  md:left-[50%] md:translate-x-[-50%] grid place-content-center text-primary-two drop-shadow-md px-4'>
         <FaHamburger fontSize={50} />
       </figure>
-      <div className='flex w-full md:max-w-[240px] max-w-[175px] items-center justify-between'>
+      <div className='flex w-full md:max-w-[210px] max-w-[175px] items-center justify-between'>
         <button>
-          <CiSearch fontSize={30} />
+          <CiSearch fontSize={25} />
         </button>
+        <Link to='/wishlist'>
+          <CiHeart fontSize={25} />
+        </Link>
         <button>
-          <CiHeart fontSize={30} />
-        </button>
-        <button>
-          <FaOpencart fontSize={30} />
+          <TbShoppingBag fontSize={25} />
         </button>
         <button
           type='button'
-          className='bg-accent-one text-white font-semibold px-6 py-2 rounded-md button-shadow hidden md:block'>
+          className='bg-accent-one text-white px-4 py-[6px] rounded-md button-shadow hidden md:block'>
           Log in
         </button>
         <div className='block md:hidden relative top-[2px]'>

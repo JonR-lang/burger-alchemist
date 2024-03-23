@@ -65,7 +65,7 @@ export default function Categories() {
         {dietaryPreferences.map(({ name, Icon }, i) => (
           <SwiperSlide
             key={i}
-            className='w-32 aspect-square bg-gray-100/50 rounded-xl grid place-content-center place-items-center shadow-sm'>
+            className='w-32 aspect-square bg-white rounded-xl grid place-content-center place-items-center shadow-sm border'>
             <div
               className={`${
                 Math.random() > 0.5 ? "text-accent-one" : "text-primary-two"

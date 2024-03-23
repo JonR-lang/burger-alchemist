@@ -7,7 +7,7 @@ import Starbucks from "../assets/starbucks-logo-png-1688.png";
 
 const MarqueeWrapper = () => {
   return (
-    <div className='w-full max-w-xl mx-auto'>
+    <div className='w-full max-w-3xl mx-auto'>
       <h2 className='text-center font-semibold'>Recommended by:</h2>
       <Marquee>
         <div className='flex gap-8 items-center'>

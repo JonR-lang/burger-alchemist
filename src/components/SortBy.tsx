@@ -8,11 +8,10 @@ import {
 
 const SortBy = () => {
   return (
-    <div className='flex items-center gap-2 text-sm'>
-      <span>Sort by:</span>
+    <div className='text-sm'>
       <Select>
-        <SelectTrigger className='w-[180px] h-auto px-2 py-1 rounded'>
-          <SelectValue placeholder='Featured' />
+        <SelectTrigger className='w-[180px] h-auto px-2 py-1 rounded border-primary-two/30 focus:ring-primary-two'>
+          <SelectValue placeholder='Sort By' />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value='best-selling'>Best Selling</SelectItem>

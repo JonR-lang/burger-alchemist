@@ -1,4 +1,4 @@
-import DaBurger from "../assets/veggie-burg.png";
+import DaBurger from "../assets/hero-2.png";
 
 export type BannerData = {
   delay: number;

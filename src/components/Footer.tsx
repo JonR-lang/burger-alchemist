@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { FaFacebookSquare } from "react-icons/fa";
-import { FaTwitterSquare } from "react-icons/fa";
+import { FaFacebookSquare, FaTwitterSquare } from "react-icons/fa";
 import { FaSquareInstagram } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className='flex flex-col border-y relative z-10'>
+    <footer className='flex flex-col border-y relative z-10  md:translate-y-[50%]'>
       <div className='flex w-full justify-between items-center md:items-end py-4 flex-col-reverse md:flex-row gap-4 md:gap-8'>
         <div className='flex gap-3 flex-col md:flex-row text-sm text-center'>
           <Link to='/'>Home</Link>
@@ -23,7 +22,7 @@ const Footer = () => {
           </label>
           <div className='flex gap-2'>
             <input
-              type='text'
+              type='email'
               id='newsletter'
               className=' w-full outline outline-1 outline-slate-300 px-2 rounded-md focus:outline-1 shadow-sm  focus:outline-primary-two'
               placeholder='Enter your email'
@@ -39,15 +38,27 @@ const Footer = () => {
           &copy;{new Date().getFullYear()} The Burger Alchemist
         </p>
         <div className='flex gap-2 text-accent-one'>
-          <button>
-            <FaFacebookSquare fontSize={25} />
-          </button>
-          <button>
-            <FaTwitterSquare fontSize={25} />
-          </button>
-          <button>
-            <FaSquareInstagram fontSize={25} />
-          </button>
+          <a
+            href='https://twitter.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Facebook'>
+            <FaFacebookSquare fontSize={25} aria-hidden={true} />
+          </a>
+          <a
+            href='https://twitter.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Twitter'>
+            <FaTwitterSquare fontSize={25} aria-hidden={true} />
+          </a>
+          <a
+            href='https://twitter.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Instagram'>
+            <FaSquareInstagram fontSize={25} aria-hidden={true} />
+          </a>
         </div>
       </div>
     </footer>

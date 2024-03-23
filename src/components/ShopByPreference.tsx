@@ -1,12 +1,16 @@
 import dietaryPreferences from "../data/dietaryPreferences";
 
-const ShopByPreference = () => {
+type classProp = {
+  className?: string;
+};
+
+const ShopByPreference = ({ className }: classProp) => {
   return (
-    <div className='bg-white rounded p-2'>
-      <h3 className='font-semibold'>Shop By Preference</h3>
+    <div className={className}>
+      <h3 className='font-semibold text-amber-900'>Shop By Preference</h3>
       <ul className='flex flex-col gap-2 mt-3 items-start'>
         {dietaryPreferences.map((item, i) => (
-          <li key={i} className='text-zinc-400 text-sm cursor-pointer'>
+          <li key={i} className='text-zinc-400 text-xs cursor-pointer'>
             {item.name}
           </li>
         ))}

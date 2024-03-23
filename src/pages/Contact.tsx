@@ -1,87 +1,85 @@
+import ContactForm from "@/components/ContactForm";
+import { FaPhone, FaLocationDot, FaSquareInstagram } from "react-icons/fa6";
+import { FaFacebookSquare, FaTwitterSquare } from "react-icons/fa";
+import { IoMail } from "react-icons/io5";
+
 const Contact = () => {
   return (
-    <div className='min-h-screen'>
-      <h1>Get In Touch</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut suscipit
-        illum nisi. Nulla alias hic, repellendus consequatur, enim, nesciunt ?
-      </p>
-
-      <div className='flex max-w-4xl mx-auto border p-2 rounded-md'>
-        <div className='flex-1 bg-red-300 rounded-md p-4'>
-          <h2>Contact information</h2>
+    <div className='flex flex-col gap-10'>
+      <div className='space-y-4'>
+        <div className='max-w-3xl w-full mx-auto text-center py-4 flex flex-col gap-4 text-amber-900'>
+          <h1 className='text-4xl font-semibold'>Get In Touch</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae a
-            repellat recusandae necessitatibus porro quod soluta officiis
-            maiores aut fugit.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut suscipit
+            illum nisi. Nulla alias hic, repellendus consequatur, enim, nesciunt
+            ?
           </p>
-          <div className='flex flex-col'>
-            <span>phone number</span>
-            <span>mail</span>
-            <span>location</span>
-          </div>
         </div>
 
-        <form className='flex flex-col flex-[2] p-3 gap-6'>
-          <div className='grid grid-cols-2 gap-3'>
-            <div className='flex flex-col'>
-              <label
-                htmlFor='name'
-                className='text-xs text-zinc-400 font-semibold'>
-                Your Name
-              </label>
-              <input
-                className='bg-transparent focus:outline-none border-b border-b-zinc-200 py-1'
-                type='text'
-                id='name'
-              />
-            </div>
-
-            <div className='flex flex-col'>
-              <label
-                htmlFor='email'
-                className='text-xs text-zinc-400 font-semibold  hover:text-red-400'>
-                Your Email
-              </label>
-              <input
-                className='bg-transparent border-b border-b-zinc-200 py-1 peer'
-                type='text'
-                id='email'
-              />
-            </div>
-
-            <div className='col-span-full flex flex-col'>
-              <label
-                htmlFor='subject'
-                className='text-xs text-zinc-400 font-semibold'>
-                Your Subject
-              </label>
-              <input
-                className='bg-transparent focus:outline-none border-b border-b-zinc-200 py-1'
-                type='text'
-                id='subject'
-              />
-            </div>
-
-            <div className='col-span-full flex flex-col'>
-              <label
-                htmlFor='message'
-                className='text-xs text-zinc-400 font-semibold'>
-                Your Message
-              </label>
-              <textarea
-                id='message'
-                className='bg-transparent focus:outline-none border-b border-b-zinc-200 py-1'
-              />
+        <div className='flex max-w-3xl mx-auto border p-2 rounded-2xl flex-col md:flex-row'>
+          <div className='flex-1 burger-pattern rounded-xl overflow-hidden'>
+            <div className='p-4 bg-primary-two/80 w-full h-full text-amber-900 flex flex-col gap-4'>
+              <h3 className='font-semibold'>Contact information</h3>
+              <p className='text-xs'>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae a
+                repellat.
+              </p>
+              <div className='flex flex-col gap-4 flex-1'>
+                <span className='flex items-center gap-1 text-xs'>
+                  <FaPhone fontSize={20} aria-hidden={true} />
+                  08063197455
+                </span>
+                <span className='flex items-center gap-1 text-xs'>
+                  <IoMail fontSize={20} aria-hidden={true} />
+                  iroelejohnny@outlook.com
+                </span>
+                <span className='flex items-center gap-1 text-xs'>
+                  <FaLocationDot fontSize={20} aria-hidden={true} />
+                  Abuja, Nigeria
+                </span>
+              </div>
+              <div className='flex gap-2 text-amber-900 self-center'>
+                <a
+                  href='https://twitter.com'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  aria-label='Facebook'>
+                  <FaFacebookSquare fontSize={25} aria-hidden={true} />
+                </a>
+                <a
+                  href='https://twitter.com'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  aria-label='Twitter'>
+                  <FaTwitterSquare fontSize={25} aria-hidden={true} />
+                </a>
+                <a
+                  href='https://twitter.com'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  aria-label='Instagram'>
+                  <FaSquareInstagram fontSize={25} aria-hidden={true} />
+                </a>
+              </div>
             </div>
           </div>
-
-          <button
-            type='submit'
-            className='px-3 py-2 bg-primary-two text-white text-sm rounded self-start'>
-            Send Message
-          </button>
-        </form>
+          <ContactForm />
+        </div>
+      </div>
+      <div className='w-full mb-2'>
+        <h2 className='text-xl font-semibold text-center mb-3 text-amber-900'>
+          Find us!
+        </h2>
+        <div className='w-full'>
+          <iframe
+            src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31790.556786991216!2d7.317500789001029!3d5.132736214011246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10429bcf78b0f7d5%3A0xb90d53e8b3113917!2sAbayi%2C%20Aba%2C%20Abia!5e0!3m2!1sen!2sng!4v1710834824221!5m2!1sen!2sng'
+            width='100%'
+            height='450'
+            style={{ border: 0 }}
+            allowFullScreen={false}
+            loading='lazy'
+            referrerPolicy='no-referrer-when-downgrade'></iframe>
+        </div>
       </div>
     </div>
   );

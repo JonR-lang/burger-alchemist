@@ -36,8 +36,8 @@ export default function Banner({
       className={`flex  ${
         hideOnMobile && "hidden md:flex"
       } flex-col md:flex-row w-full gap-3 mt-4`}>
-      {structure.map(({ template, colorObj, data }) => (
-        <SwiperSlide>
+      {structure.map(({ template, colorObj, data }, i) => (
+        <SwiperSlide key={i}>
           <BannerTemplate template={template} colorObj={colorObj} data={data} />
         </SwiperSlide>
       ))}

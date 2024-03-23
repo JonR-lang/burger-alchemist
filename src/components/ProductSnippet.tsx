@@ -1,24 +1,33 @@
-import ReactStars from "react-stars"; //fix this error!
+import { useState } from "react";
 import Burger from "../assets/hero-2.png";
+
+//For react-rating
+import { Rating, Star } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
+
+const myStyles = {
+  itemShapes: Star,
+  activeFillColor: "#ffb700",
+  inactiveFillColor: "#fbf1a9",
+};
 
 const ProductSnippet = () => {
   return (
-    <div className='p-2 bg-lime-300 rounded flex gap-2 items-center'>
-      <figure className='size-16 bg-red-300 rounded'>
+    <div className='p-2rounded flex gap-2 items-center'>
+      <figure className='size-16 rounded'>
         <img
           src={Burger}
           alt='product-item'
           className='size-full object-cover'
         />
       </figure>
-      <div>
+      <div className=''>
         <h4 className='text-sm font-semibold'>Product name</h4>
-        <ReactStars
-          count={5}
-          value={3}
-          activeColor='#ffd700'
-          size={15}
-          edit={false}
+        <Rating
+          style={{ maxWidth: 75 }}
+          value={3.7}
+          readOnly={true}
+          className='-ml-[3px] '
         />
         <span className='text-sm'>{30}</span>
       </div>

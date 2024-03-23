@@ -37,7 +37,12 @@ module.exports = {
       },
       fontFamily: {
         "rubik-dirt": ["Rubik Dirt", "system-ui"],
-        "open-sans": ["Open Sans", "sans-serif"],
+        quicksand: ["Quicksand", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+      },
+      gridTemplateColumns: {
+        "responsive-grid": "repeat(auto-fit, minmax(200px, 1fr))",
+        "responsive-grid-mobile": "repeat(auto-fit, minmax(150px, 1fr))",
       },
     },
   },
