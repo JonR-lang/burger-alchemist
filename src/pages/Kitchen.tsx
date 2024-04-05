@@ -1,4 +1,9 @@
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { useAllProductsData } from "@/hooks/useAllProducts";
+
+import { ProductCardType } from "@/types/ProductCard.types";
 
 // components
 import FilterBy from "../components/FilterBy";
@@ -13,7 +18,36 @@ import MobileShopBy from "@/components/MobileShopBy";
 import Pagination from "@/components/Pagination";
 
 const Kitchen = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageParam = parseInt(searchParams.get("page") || "1");
+  const [page, setPage] = useState(pageParam);
+  const { data, isLoading, isError, error } = useAllProductsData({ page });
   const [grid, setGrid] = useLocalStorage("gridNumber", 2);
+  const totalProductsPerPage = 10;
+
+  const handleNextPage = () => {
+    const pagesCount = Math.ceil(data.totalCount / totalProductsPerPage);
+    if (page != pagesCount) {
+      setPage((prevPage) => prevPage + 1);
+      setSearchParams(`page=${page + 1}`);
+    }
+  };
+
+  const handleGoToPage = (pageNumber: number) => {
+    setPage(pageNumber);
+    setSearchParams(`page=${pageNumber}`);
+  };
+
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+      setSearchParams(`page=${page - 1}`);
+    }
+  };
+
+  if (isLoading) return <div> This content is Loading</div>;
+
+  if (isError) return <div>{error.message}</div>;
 
   return (
     <div className='pb-4'>
@@ -47,15 +81,20 @@ const Kitchen = () => {
             className={`grid ${
               grid === 4 && "grid-cols-4"
             } grid-cols-${grid} gap-3 sm:gap-4 py-4`}>
-            {Array(10)
-              .fill("ed")
-              .map((item, i) => (
-                <ProductCard grid={grid} setGrid={setGrid} key={i} />
-              ))}
+            {data.products.map((item: ProductCardType, i: number) => (
+              <ProductCard data={item} grid={grid} setGrid={setGrid} key={i} />
+            ))}
           </div>
         </div>
       </div>
-      <Pagination />
+      <Pagination
+        page={page}
+        totalProducts={data.totalCount}
+        totalProductsPerPage={totalProductsPerPage}
+        onNext={handleNextPage}
+        onPrev={handlePrevPage}
+        onGoToPage={handleGoToPage}
+      />
     </div>
   );
 };

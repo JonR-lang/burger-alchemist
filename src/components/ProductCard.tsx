@@ -1,24 +1,36 @@
-import Burger from "../assets/hero-2.png";
 import { CiHeart } from "react-icons/ci";
 import { TbShoppingBagPlus } from "react-icons/tb";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { Rating } from "@smastrom/react-rating";
+import { ProductCardType } from "@/types/ProductCard.types";
 
-export type GridProp = {
+import { useToast } from "@/components/ui/use-toast";
+
+export type ProductCardProp = {
   grid?: number;
   setGrid?: (number: number) => void;
+  data: ProductCardType;
 };
 
-const description =
-  "Lorem ipsum,henderit repellat, facilis officiis rem nostrum deleniti nobis quaerat blanditiis est distinctio architecto voluptatibus magni sit.is quaerat blanditiis est distinctio architecto voluptatibus.";
+const excludedPathnames = ["/wishlist", "/products"];
 
-const excludedPathnames = ["/wishlist", "/kitchen"];
-
-const ProductCard = ({ grid }: GridProp) => {
+const ProductCard = ({
+  grid,
+  data: { name, images, totalRatings, price, description },
+}: ProductCardProp) => {
   const { pathname } = useLocation();
+  const { toast } = useToast();
+
+  const handleClick = () => {
+    toast({
+      variant: "yellowBorder",
+      description: "Item has been added to cart.",
+    });
+  };
 
   return (
-    <div
+    <Link
+      to={"/products/:id"}
       className={`${
         !excludedPathnames.includes(pathname) && "min-w-[200px]"
       } md:min-w-0 group rounded-xl p-[6px] sm:p-2 relative z-20 border border-primary-two/20 shadow-sm bg-white flex  ${
@@ -31,7 +43,7 @@ const ProductCard = ({ grid }: GridProp) => {
           grid === 1 && "flex-1 w-full"
         }`}>
         <img
-          src={Burger}
+          src={images[0].url}
           alt='burger'
           className='absolute group-hover:scale-110 transition duration-500 group-hover:rotate-[-12deg] md:group-hover:-translate-y-14 cursor-pointer drop-shadow-lg'
         />
@@ -45,7 +57,7 @@ const ProductCard = ({ grid }: GridProp) => {
             (grid === 2 || grid === 1 || grid === 3) &&
             "text-base md:text-xl font-bold"
           }`}>
-          Burger Name
+          {name.length > 14 ? name.slice(0, 13) + "..." : name}
         </h4>
 
         <p
@@ -64,7 +76,7 @@ const ProductCard = ({ grid }: GridProp) => {
           className={`text-xl font-bold text-accent-one ${
             grid === 1 && "text-2xl md:text-3xl xl:text-4xl"
           } ${grid === 2 && "md:text-3xl xl:text-4xl"}`}>
-          $33
+          ${price}
         </span>
         <div className='w-full flex items-center justify-between '>
           <span
@@ -77,10 +89,13 @@ const ProductCard = ({ grid }: GridProp) => {
               readOnly={true}
               style={{ maxWidth: 15 }}
             />
-            <span className='text-xs mt-[1.5px]'>3.5</span>
+            <span className='text-xs mt-[3px]'>{totalRatings}</span>
           </span>
-          <button className='sm:-mt-[7px] text-accent-one'>
-            <TbShoppingBagPlus fontSize={25} />
+          <button
+            className='sm:-mt-[7px] text-accent-one'
+            onClick={() => handleClick()}>
+            <TbShoppingBagPlus fontSize={25} aria-hidden={true} />
+            <span className='sr-only'>Add to Cart</span>
           </button>
         </div>
       </div>
@@ -100,7 +115,7 @@ const ProductCard = ({ grid }: GridProp) => {
           }`}>
           <Rating
             style={{ width: "100%", objectFit: "contain" }}
-            value={4}
+            value={totalRatings}
             orientation='vertical'
             readOnly={true}
           />
@@ -115,7 +130,7 @@ const ProductCard = ({ grid }: GridProp) => {
         }`}>
         <CiHeart fontSize={27} />
       </button>
-    </div>
+    </Link>
   );
 };
 

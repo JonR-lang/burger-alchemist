@@ -15,7 +15,7 @@ const ingredients = [
 
 const DetailsAccordion = () => {
   return (
-    <Accordion type='single' collapsible>
+    <Accordion type='single' collapsible className='lg:hidden'>
       <AccordionItem value='item-1' className='md:hidden'>
         <AccordionTrigger>Size</AccordionTrigger>
         <AccordionContent>medium</AccordionContent>

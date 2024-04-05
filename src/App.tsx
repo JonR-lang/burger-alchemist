@@ -1,25 +1,29 @@
-import MainLayout from "./layouts/MainLayout";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Kitchen from "./pages/Kitchen";
-import Blog from "./pages/Blog";
-import Contact from "./pages/Contact";
-import Wishlist from "./pages/Wishlist";
-import ProductDetails from "./pages/ProductDetails";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Pages from "./Pages";
+import LoginPage from "./pages/LoginPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import { Toaster } from "@/components/ui/toaster";
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 3 } },
+});
 
 function App() {
   return (
     <>
-      <MainLayout>
+      <QueryClientProvider client={queryClient}>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/kitchen' element={<Kitchen />} />
-          <Route path='/kitchen/:id' element={<ProductDetails />} />
-          <Route path='/blog' element={<Blog />} />
-          <Route path='/contact' element={<Contact />} />
-          <Route path='/wishlist' element={<Wishlist />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/*' element={<Pages />} />
         </Routes>
-      </MainLayout>
+        <Toaster />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </>
   );
 }

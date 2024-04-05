@@ -1,10 +1,11 @@
 import { Rating } from "@smastrom/react-rating";
-import MobileReviewComp from "./MobileReviewComp";
-import { FiEdit3 } from "react-icons/fi";
+import { motion } from "framer-motion";
+import ReviewComp from "./ReviewComp";
+import WriteReview from "./WriteReview";
 
 const RatingsReview = () => {
   return (
-    <div id='ratings-and-reviews' className='mt-3'>
+    <div id='ratings-and-reviews' className='mt-1'>
       <div id='ratings' className='flex flex-col gap-2'>
         <h2 className='text-2xl lg:text-3xl font-bold'>Ratings and Reviews</h2>
         <div className='flex gap-3 md:gap-4 md:items-center flex-col md:flex-row'>
@@ -29,7 +30,7 @@ const RatingsReview = () => {
               .fill(2)
               .map((item, i) => (
                 <div key={i} className='flex items-center gap-2'>
-                  <span className='flex items-center gap-[2px]'>
+                  <span className='flex items-center justify-between gap-[2px] w-10'>
                     {5 - i}
                     <Rating
                       style={{
@@ -44,10 +45,16 @@ const RatingsReview = () => {
                   </span>
                   <div
                     id='progress-bar'
-                    className='bg-gray-300 h-1 md:h-2 rounded-full w-full overflow-hidden'>
-                    <div
+                    className='bg-gray-300 h-[6px] md:h-2 rounded-full w-full overflow-hidden'>
+                    <motion.div
                       id='progress-track'
-                      className='h-full w-3/4 bg-emerald-500'></div>
+                      initial={{ width: 0 }}
+                      whileInView={{
+                        width: `80%`,
+                        transition: { duration: 4 },
+                      }}
+                      viewport={{ once: true }}
+                      className='h-full bg-neutral-600'></motion.div>
                   </div>
                   <p className='font-semibold text-sm'>45%</p>
                 </div>
@@ -55,20 +62,22 @@ const RatingsReview = () => {
           </div>
         </div>
       </div>
-      <div id='reviews'>
+      <div id='reviews' className='mt-6'>
         <div className='flex justify-between items-center text-sm text-neutral-500 mt-2'>
-          <p>{"13 reviews"}</p>
-          <button className='uppercase flex gap-1 items-center'>
-            {"write a review"}
-            <FiEdit3 fontSize={18} />
-          </button>
+          <p className=''>{"13 reviews"}</p>
+          <div className='md:hidden'>
+            <WriteReview />
+          </div>
         </div>
         <div className='py-2 flex flex-col gap-2'>
           {Array(3)
             .fill(3)
             .map((item, i) => (
-              <MobileReviewComp key={i} />
+              <ReviewComp key={i} index={i} />
             ))}
+        </div>
+        <div className='hidden md:block'>
+          <WriteReview />
         </div>
       </div>
     </div>

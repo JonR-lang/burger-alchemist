@@ -19,21 +19,23 @@ const Contact = () => {
         <div className='flex max-w-3xl mx-auto border p-2 rounded-2xl flex-col md:flex-row'>
           <div className='flex-1 burger-pattern rounded-xl overflow-hidden'>
             <div className='p-4 bg-primary-two/80 w-full h-full text-amber-900 flex flex-col gap-4'>
-              <h3 className='font-semibold'>Contact information</h3>
-              <p className='text-xs'>
+              <h3 className='font-semibold text-xl md:text-base'>
+                Contact information
+              </h3>
+              <p className='md:text-xs'>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae a
                 repellat.
               </p>
               <div className='flex flex-col gap-4 flex-1'>
-                <span className='flex items-center gap-1 text-xs'>
+                <span className='flex items-center gap-1 md:text-xs'>
                   <FaPhone fontSize={20} aria-hidden={true} />
                   08063197455
                 </span>
-                <span className='flex items-center gap-1 text-xs'>
+                <span className='flex items-center gap-1 md:text-xs'>
                   <IoMail fontSize={20} aria-hidden={true} />
                   iroelejohnny@outlook.com
                 </span>
-                <span className='flex items-center gap-1 text-xs'>
+                <span className='flex items-center gap-1 md:text-xs'>
                   <FaLocationDot fontSize={20} aria-hidden={true} />
                   Abuja, Nigeria
                 </span>
@@ -70,7 +72,7 @@ const Contact = () => {
         <h2 className='text-xl font-semibold text-center mb-3 text-amber-900'>
           Find us!
         </h2>
-        <div className='w-full'>
+        <div className='w-full max-w-7xl mx-auto'>
           <iframe
             src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31790.556786991216!2d7.317500789001029!3d5.132736214011246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10429bcf78b0f7d5%3A0xb90d53e8b3113917!2sAbayi%2C%20Aba%2C%20Abia!5e0!3m2!1sen!2sng!4v1710834824221!5m2!1sen!2sng'
             width='100%'

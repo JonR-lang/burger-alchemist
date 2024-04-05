@@ -11,8 +11,8 @@ const Navbar = ({ showMenu }: ShowMenuProp) => {
         showMenu ? "left-0 backdrop-blur-sm z-40" : "left-[-100%]"
       } md:static bg-accent-one/95 border-r-2 border-r-primary-two md:border-none md:bg-transparent h-full rounded-br-[200px] md:rounded-br-none md:h-auto z-20`}>
       <NavLink to='/'>Home</NavLink>
-      <NavLink to='/kitchen'>Kitchen</NavLink>
-      <NavLink to='/blog'>Blog</NavLink>
+      <NavLink to='/products'>Kitchen</NavLink>
+      <NavLink to='/blogs'>Blog</NavLink>
       <NavLink to='/contact'>Contact</NavLink>
     </nav>
   );

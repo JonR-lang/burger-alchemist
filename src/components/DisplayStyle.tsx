@@ -3,12 +3,22 @@ import { BiGridVertical } from "react-icons/bi";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 
+import useMediaQuery from "@/hooks/useMediaQuery";
+import { useEffect } from "react";
+
 export type GridProp = {
   grid: number;
   setGrid: (number: number) => void;
 };
 
 const DisplayStyle = ({ grid, setGrid }: GridProp) => {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  useEffect(() => {
+    //What if the screen was initially in desktop mode, with a grid display of 3 columns,  and somehow, for some reason, it changes to mobile? The mobile screen is not large enough to handle a 3 column display, so this automatically sets the screen to a display of 2 columns. Edge case, handled!
+    if (!isDesktop && grid !== 1) setGrid(2);
+  }, [isDesktop]);
+
   return (
     <div aria-hidden={true} className='flex items-center gap-2'>
       <div

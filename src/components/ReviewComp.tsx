@@ -1,10 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Rating } from "@smastrom/react-rating";
 
-const MobileReviewComp = () => {
+type IndexProp = {
+  index: number;
+};
+
+const ReviewComp = ({ index }: IndexProp) => {
+  //When infusing logic into this app, smart johnny, remember that you should pass as a prop the length of the array from the parent, as a prop to this component, then you index with it!
+  // console.log(index);
+
   return (
-    <div className='flex gap-2 py-4 border-b'>
-      <Avatar className='mt-1'>
+    <div className={`flex gap-2 md:gap-3 py-4 ${index < 2 && "border-b"}`}>
+      <Avatar className='mt-1 '>
         <AvatarImage src='https://github.com/shadcn.png' />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
@@ -22,4 +29,4 @@ const MobileReviewComp = () => {
   );
 };
 
-export default MobileReviewComp;
+export default ReviewComp;

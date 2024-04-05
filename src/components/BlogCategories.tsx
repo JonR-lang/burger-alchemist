@@ -53,7 +53,9 @@ export default function BlogCategories() {
         {Array(4)
           .fill("red")
           .map((item, i) => (
-            <SwiperSlide className='bg-white rounded-lg py-4 px-4 shadow border'>
+            <SwiperSlide
+              key={i}
+              className='bg-white rounded-lg py-4 px-4 shadow border'>
               <figure className='flex gap-3 items-center overflow-hidden'>
                 <img
                   src={BurgerImage}

@@ -10,6 +10,7 @@ import IngredientTable from "@/components/IngredientTable";
 import AddQuantityInput from "@/components/AddQuantityInput";
 import DetailsAccordion from "@/components/DetailsAccordion";
 import RatingsReview from "@/components/RatingsReview";
+import RelatedProducts from "@/components/RelatedProducts";
 
 const ProductDetails = () => {
   return (
@@ -52,8 +53,8 @@ const ProductDetails = () => {
                     key={i}
                     to='/'
                     className={`${badgeVariants({
-                      variant: "default",
-                    })} bg-neutral-500`}>
+                      variant: "secondary",
+                    })} bg-neutral-200`}>
                     tag
                   </Link>
                 ))}
@@ -67,7 +68,7 @@ const ProductDetails = () => {
             </div>
           </div>
           <div className='flex justify-between lg:mt-2 '>
-            <div className='flex flex-col gap-3 justify-between w-full lg:w-auto'>
+            <div className='flex flex-col gap-4 justify-between w-full lg:w-auto'>
               <div className='hidden md:flex flex-col gap-2'>
                 <p className='text-sm'>{"Gourmet"}</p>
                 <p className='text-sm'>Size: {"medium"}</p>
@@ -75,7 +76,7 @@ const ProductDetails = () => {
               </div>
               <div className='flex flex-col md:flex-row lg:flex-col gap-3 md:gap-2 md:items-center lg:items-start justify-between mt-2 md:mt-0'>
                 <AddQuantityInput />
-                <Button className='bg-accent-one text-base md:text-sm py-6 md:py-5 font-semibold'>
+                <Button className='bg-accent-one text-base md:text-sm py-6 md:py-5 font-semibold mt-2'>
                   Add to cart
                 </Button>
               </div>
@@ -87,9 +88,8 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      <div className='lg:hidden'>
-        <DetailsAccordion />
-      </div>
+      <DetailsAccordion />
+      <RelatedProducts />
       <RatingsReview />
     </div>
   );

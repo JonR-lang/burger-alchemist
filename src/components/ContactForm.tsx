@@ -50,7 +50,7 @@ const ContactForm = () => {
             name='fullname'
             render={({ field }) => (
               <FormItem className='col-span-full md:col-span-1 flex flex-col'>
-                <FormLabel className='text-xs text-zinc-400 font-semibold'>
+                <FormLabel className='md:text-xs text-zinc-400 font-semibold'>
                   Your Name
                 </FormLabel>
                 <FormControl>
@@ -60,7 +60,7 @@ const ContactForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className='font-normal text-xs' />
               </FormItem>
             )}
           />
@@ -69,7 +69,7 @@ const ContactForm = () => {
             name='email'
             render={({ field }) => (
               <FormItem className='col-span-full md:col-span-1 flex flex-col'>
-                <FormLabel className='text-xs text-zinc-400 font-semibold'>
+                <FormLabel className='md:text-xs text-zinc-400 font-semibold'>
                   Your Email
                 </FormLabel>
                 <FormControl>
@@ -79,7 +79,7 @@ const ContactForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className='font-normal text-xs' />
               </FormItem>
             )}
           />
@@ -88,7 +88,7 @@ const ContactForm = () => {
             name='subject'
             render={({ field }) => (
               <FormItem className='col-span-full flex flex-col'>
-                <FormLabel className='text-xs text-zinc-400 font-semibold'>
+                <FormLabel className='md:text-xs text-zinc-400 font-semibold'>
                   Subject
                 </FormLabel>
                 <FormControl>
@@ -98,7 +98,7 @@ const ContactForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className='font-normal text-xs' />
               </FormItem>
             )}
           />
@@ -107,7 +107,7 @@ const ContactForm = () => {
             name='message'
             render={({ field }) => (
               <FormItem className='col-span-full flex flex-col'>
-                <FormLabel className='text-xs text-zinc-400 font-semibold'>
+                <FormLabel className='md:text-xs text-zinc-400 font-semibold'>
                   Message
                 </FormLabel>
                 <FormControl>
@@ -117,7 +117,7 @@ const ContactForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className='font-normal text-xs' />
               </FormItem>
             )}
           />
@@ -125,7 +125,7 @@ const ContactForm = () => {
 
         <button
           type='submit'
-          className='px-4 py-2 bg-primary-two text-white  md:text-sm rounded-md md:self-start self-stretch'>
+          className='px-4 py-2 bg-accent-one text-white  md:text-sm rounded-md md:self-start self-stretch'>
           Send Message
         </button>
       </form>
