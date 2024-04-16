@@ -77,6 +77,7 @@ const PaginationWrapper = ({
             <PaginationPrevious
               onClick={onPrev}
               aria-disabled={isPrevDisabled}
+              className='cursor-pointer'
             />
           </PaginationItem>
           {renderPageNumbers()}
@@ -84,7 +85,7 @@ const PaginationWrapper = ({
           {!isNextDisabled && (
             <>
               <PaginationItem>
-                <PaginationNext onClick={onNext} />
+                <PaginationNext onClick={onNext} className='cursor-pointer' />
               </PaginationItem>
             </>
           )}

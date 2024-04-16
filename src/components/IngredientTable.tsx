@@ -7,15 +7,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const ingredients = [
-  { name: "Double Beef Patty", type: "Protein" },
-  { name: "Artisanal Bun", type: "Bread" },
-  { name: "Lettuce", type: "Vegetable" },
-  //   { name: "Tomato", type: "Vegetable" },
-  //   { name: "Special House Sauce", type: "Condiment" },
-];
+type IngredientTableProp = {
+  tableData: {
+    name: string;
+    type: string;
+    _id: string;
+  }[];
+};
 
-const IngredientTable = () => {
+const IngredientTable = ({ tableData }: IngredientTableProp) => {
   return (
     <Table className='w-full text-xs'>
       <TableHeader>
@@ -25,7 +25,7 @@ const IngredientTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {ingredients.map((item, i) => (
+        {tableData.map((item, i) => (
           <TableRow key={i}>
             <TableCell>{i + 1}</TableCell>
             <TableCell className='text-right'>{item.name}</TableCell>

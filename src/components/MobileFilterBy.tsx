@@ -1,4 +1,10 @@
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import useFilterByPrice from "@/hooks/filterhooks/useFilterByPrice";
+import useFilterByAvailabillity from "@/hooks/filterhooks/useFilterByAvailabillity";
+
+import { Button } from "./ui/button";
 
 import {
   DropdownMenu,
@@ -11,16 +17,54 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import useFilterBySize from "@/hooks/filterhooks/useFilterBySize";
 
 const MobileFilterBy = () => {
-  const [inStock, setInStock] = useLocalStorage("in-stock", true);
-  const [outOfStock, setOutOfStock] = useLocalStorage("out-of-stock", false);
-  const [sizeSmall, setSizeSmall] = useLocalStorage("filter-small-size", false);
-  const [sizeMedium, setSizeMedium] = useLocalStorage(
-    "filter-medium-size",
-    false
+  const [searchParams] = useSearchParams();
+  //Availability
+  const [inStock, setInStock] = useState(false);
+  const [outOfStock, setOutOfStock] = useState(false);
+
+  //Price
+  const [priceFrom, setPriceFrom] = useLocalStorage("priceFrom", "");
+  const [priceTo, setPriceTo] = useLocalStorage("priceTo", "");
+  const [priceRangeError, setPriceRangeError] = useState("");
+
+  const size = searchParams.getAll("size") || [];
+  const quantity = searchParams.get("quantity") || "";
+
+  const { handleFilterByPrice } = useFilterByPrice(
+    priceFrom,
+    priceTo,
+    setPriceRangeError
   );
-  const [sizeLarge, setSizeLarge] = useLocalStorage("filter-large-size", false);
+  const { handleFilterByAvailability } = useFilterByAvailabillity();
+  const { handleFilterbySize } = useFilterBySize();
+
+  const handleInStockChange = () => {
+    setInStock(true);
+    setOutOfStock(false);
+    handleFilterByAvailability("in-stock");
+  };
+
+  const handleOutOfStockChange = () => {
+    setOutOfStock(true);
+    setInStock(false);
+    handleFilterByAvailability("out-of-stock");
+  };
+
+  const handlePriceToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceTo(e.target.value && parseInt(e.target.value));
+    if (e.target.value > priceFrom) {
+      setPriceRangeError("");
+    }
+  };
+
+  const handleResetPriceInputs = () => {
+    setPriceFrom("");
+    setPriceTo("");
+    setPriceRangeError("");
+  };
 
   return (
     <div className='flex-1'>
@@ -37,43 +81,70 @@ const MobileFilterBy = () => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuCheckboxItem
-            checked={inStock}
-            onCheckedChange={setInStock}
+            checked={quantity == "1"}
+            onCheckedChange={handleInStockChange}
             onSelect={(e) => e.preventDefault()}>
-            in stock
+            In stock
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
-            checked={outOfStock}
-            onCheckedChange={setOutOfStock}
+            checked={quantity == "0"}
+            onCheckedChange={handleOutOfStockChange}
             onSelect={(e) => e.preventDefault()}>
-            out of stock
+            Out of stock
           </DropdownMenuCheckboxItem>
           <DropdownMenuSeparator />
           <DropdownMenuLabel className='font-bold'>Price</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild onSelect={(e) => e.preventDefault()}>
-            <div className='flex gap-2'>
-              <div className='flex-1'>
-                <label htmlFor='from' className='text-sm'>
-                  From
-                </label>
-                <input
-                  type='number'
-                  name='from'
-                  id='from'
-                  className='w-full p-2 border rounded focus:outline-none shadow-sm'
-                />
+            <div className='flex flex-col'>
+              <div className='flex gap-2 text-zinc-600'>
+                <div>
+                  <label htmlFor='from'>From</label>
+                  <input
+                    inputMode='numeric'
+                    type='number'
+                    name='from'
+                    onBlur={() => setPriceRangeError("")}
+                    value={priceFrom}
+                    onChange={(e) => {
+                      setPriceFrom(e.target.value);
+                    }}
+                    id='from'
+                    className='w-full p-1 border rounded focus:outline-none shadow-sm text-base'
+                  />
+                </div>
+                <div>
+                  <label htmlFor='to'>To</label>
+                  <input
+                    type='number'
+                    inputMode='numeric'
+                    name='to'
+                    onBlur={() => setPriceRangeError("")}
+                    value={priceTo}
+                    onChange={handlePriceToInput}
+                    id='to'
+                    className='w-full p-1 border rounded focus:outline-none shadow-sm text-base'
+                  />
+                </div>
               </div>
-              <div className='flex-1'>
-                <label htmlFor='to' className='text-sm'>
-                  To
-                </label>
-                <input
-                  type='number'
-                  name='to'
-                  id='to'
-                  className='w-full p-2 border rounded focus:outline-none shadow-sm'
-                />
+              <p className='text-sm text-red-600 mt-1 self-start'>
+                {priceRangeError && priceRangeError}
+              </p>
+              <div className='flex gap-2 w-full'>
+                <Button
+                  variant='secondary'
+                  onClick={handleResetPriceInputs}
+                  disabled={!!!priceTo || !!!priceFrom}
+                  className='mt-2 flex-1'>
+                  Reset
+                </Button>
+                <Button
+                  variant='secondary'
+                  onClick={handleFilterByPrice}
+                  disabled={!!!priceTo || !!!priceFrom}
+                  className='mt-2 flex-1 '>
+                  Apply Filter
+                </Button>
               </div>
             </div>
           </DropdownMenuItem>
@@ -81,22 +152,28 @@ const MobileFilterBy = () => {
           <DropdownMenuLabel className='font-bold'>Size</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuCheckboxItem
-            checked={sizeSmall}
-            onCheckedChange={setSizeSmall}
+            checked={size.includes("single")}
+            onCheckedChange={(value: boolean) =>
+              handleFilterbySize("single", value)
+            }
             onSelect={(e) => e.preventDefault()}>
-            small
+            Single
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
-            checked={sizeMedium}
-            onCheckedChange={setSizeMedium}
+            checked={size.includes("double")}
+            onCheckedChange={(value: boolean) =>
+              handleFilterbySize("double", value)
+            }
             onSelect={(e) => e.preventDefault()}>
-            medium
+            Double
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
-            checked={sizeLarge}
-            onCheckedChange={setSizeLarge}
+            checked={size.includes("triple")}
+            onCheckedChange={(value: boolean) =>
+              handleFilterbySize("triple", value)
+            }
             onSelect={(e) => e.preventDefault()}>
-            large
+            Triple
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>

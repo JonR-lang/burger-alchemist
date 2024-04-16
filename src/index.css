@@ -8,6 +8,17 @@ body {
   background-color: rgba(254, 254, 254, 1);
 }
 
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 .swiper-button-disabled {
   background-color: rgba(128, 128, 128, 0.5);
 }

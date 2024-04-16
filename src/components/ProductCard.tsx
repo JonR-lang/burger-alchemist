@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 export type ProductCardProp = {
   grid?: number;
+  page?: number;
   setGrid?: (number: number) => void;
   data: ProductCardType;
 };
@@ -16,7 +17,7 @@ const excludedPathnames = ["/wishlist", "/products"];
 
 const ProductCard = ({
   grid,
-  data: { name, images, totalRatings, price, description },
+  data: { name, images, slug, totalRatings, price, description, _id: id },
 }: ProductCardProp) => {
   const { pathname } = useLocation();
   const { toast } = useToast();
@@ -30,7 +31,7 @@ const ProductCard = ({
 
   return (
     <Link
-      to={"/products/:id"}
+      to={`/products/${id}`}
       className={`${
         !excludedPathnames.includes(pathname) && "min-w-[200px]"
       } md:min-w-0 group rounded-xl p-[6px] sm:p-2 relative z-20 border border-primary-two/20 shadow-sm bg-white flex  ${
@@ -44,7 +45,7 @@ const ProductCard = ({
         }`}>
         <img
           src={images[0].url}
-          alt='burger'
+          alt={slug}
           className='absolute group-hover:scale-110 transition duration-500 group-hover:rotate-[-12deg] md:group-hover:-translate-y-14 cursor-pointer drop-shadow-lg'
         />
       </figure>
@@ -80,7 +81,7 @@ const ProductCard = ({
         </span>
         <div className='w-full flex items-center justify-between '>
           <span
-            className={`flex items-center gap-1 bg-amber-200 p-1 rounded ${
+            className={`flex items-center gap-[2px] bg-amber-200 p-1 rounded ${
               grid === 1 && "hidden"
             }`}>
             <Rating
@@ -89,11 +90,13 @@ const ProductCard = ({
               readOnly={true}
               style={{ maxWidth: 15 }}
             />
-            <span className='text-xs mt-[3px]'>{totalRatings}</span>
+            <span className='text-xs mt-[3px]'>
+              {totalRatings ? totalRatings.toFixed(1) : 0}
+            </span>
           </span>
           <button
             className='sm:-mt-[7px] text-accent-one'
-            onClick={() => handleClick()}>
+            onClick={handleClick}>
             <TbShoppingBagPlus fontSize={25} aria-hidden={true} />
             <span className='sr-only'>Add to Cart</span>
           </button>

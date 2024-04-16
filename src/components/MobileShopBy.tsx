@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import dietaryPreferences from "@/data/dietaryPreferences";
 
 import {
@@ -12,6 +13,14 @@ import {
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const MobileShopBy = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleClick = (preference: string) => {
+    searchParams.set("dietaryPreference", preference);
+    searchParams.set("page", "1");
+    setSearchParams(searchParams, { replace: true });
+  };
+
   return (
     <div className='flex-1'>
       <DropdownMenu>
@@ -29,7 +38,7 @@ const MobileShopBy = () => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {dietaryPreferences.map((item, i) => (
-            <DropdownMenuItem key={i} className=''>
+            <DropdownMenuItem key={i} onClick={() => handleClick(item.name)}>
               {item.name}
             </DropdownMenuItem>
           ))}

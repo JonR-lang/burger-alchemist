@@ -1,29 +1,43 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Rating } from "@smastrom/react-rating";
+import { getFirstLettersOfNames } from "@/utils/getFirstLettersofNames";
 
-type IndexProp = {
+type ReviewCompProp = {
   index: number;
+  rating: {
+    _id: string;
+    star: number;
+    comment: string;
+    postedBy: {
+      _id: string;
+      firstName: string;
+      lastName: string;
+      picturePath: string;
+    };
+  };
 };
 
-const ReviewComp = ({ index }: IndexProp) => {
-  //When infusing logic into this app, smart johnny, remember that you should pass as a prop the length of the array from the parent, as a prop to this component, then you index with it!
-  // console.log(index);
-
+const ReviewComp = ({
+  index,
+  rating: {
+    comment,
+    star,
+    postedBy: { firstName, lastName, picturePath },
+  },
+}: ReviewCompProp) => {
+  const nameInitial = getFirstLettersOfNames(firstName, lastName);
   return (
     <div className={`flex gap-2 md:gap-3 py-4 ${index < 2 && "border-b"}`}>
       <Avatar className='mt-1 '>
-        <AvatarImage src='https://github.com/shadcn.png' />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarImage src={picturePath} />
+        <AvatarFallback>{nameInitial}</AvatarFallback>
       </Avatar>
       <div className='flex-1 flex flex-col gap-1'>
-        <h4 className='text-sm font-semibold'>Carly West</h4>
+        <h4 className='text-sm font-semibold'>{firstName + " " + lastName}</h4>
         <div className='w-[70px]'>
-          <Rating style={{ width: "100%" }} value={4} readOnly={true} />
+          <Rating style={{ width: "100%" }} value={star} readOnly={true} />
         </div>
-        <p className='text-sm'>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse,
-          aperiam veniam. Inventore dolor saepe porro!
-        </p>
+        <p className='text-sm'>{comment}</p>
       </div>
     </div>
   );

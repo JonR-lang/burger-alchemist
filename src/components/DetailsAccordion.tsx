@@ -5,20 +5,22 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const ingredients = [
-  { name: "Double Beef Patty", type: "Protein" },
-  { name: "Artisanal Bun", type: "Bread" },
-  { name: "Lettuce", type: "Vegetable" },
-  //   { name: "Tomato", type: "Vegetable" },
-  //   { name: "Special House Sauce", type: "Condiment" },
-];
+type AccordionProp = {
+  size: string;
+  burgerType: string;
+  ingredients: {
+    name: string;
+    type: string;
+    _id: string;
+  }[];
+};
 
-const DetailsAccordion = () => {
+const DetailsAccordion = ({ size, ingredients, burgerType }: AccordionProp) => {
   return (
     <Accordion type='single' collapsible className='lg:hidden'>
       <AccordionItem value='item-1' className='md:hidden'>
         <AccordionTrigger>Size</AccordionTrigger>
-        <AccordionContent>medium</AccordionContent>
+        <AccordionContent>{size}</AccordionContent>
       </AccordionItem>
       <AccordionItem value='item-2'>
         <AccordionTrigger>Top Ingredients</AccordionTrigger>
@@ -32,7 +34,7 @@ const DetailsAccordion = () => {
       </AccordionItem>
       <AccordionItem value='item-3' className='md:hidden'>
         <AccordionTrigger>Burger Type</AccordionTrigger>
-        <AccordionContent>classic</AccordionContent>
+        <AccordionContent>{burgerType}</AccordionContent>
       </AccordionItem>
     </Accordion>
   );

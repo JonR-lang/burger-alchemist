@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { useAllProductsData } from "@/hooks/useAllProducts";
+import { useAllProductsData } from "@/hooks/useAllProductsData";
 
 import { ProductCardType } from "@/types/ProductCard.types";
 
@@ -16,36 +15,51 @@ import ProductCard from "../components/ProductCard";
 import MobileFilterBy from "@/components/MobileFilterBy";
 import MobileShopBy from "@/components/MobileShopBy";
 import Pagination from "@/components/Pagination";
+import SkeletonProductCard from "@/components/SkeletonProductCard";
+
+const totalProductsPerPage = 10;
 
 const Kitchen = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const pageParam = parseInt(searchParams.get("page") || "1");
-  const [page, setPage] = useState(pageParam);
-  const { data, isLoading, isError, error } = useAllProductsData({ page });
+  const page = parseInt(searchParams.get("page") || "1");
+  const preference = searchParams.get("dietaryPreference") || "";
+  const quantityFilter = searchParams.get("quantity") || "";
+  const sort = searchParams.get("sort") || "";
+  const minPrice = searchParams.get("minPrice") || "";
+  const maxPrice = searchParams.get("maxPrice") || "";
+  const size = searchParams.getAll("size") || [];
+
   const [grid, setGrid] = useLocalStorage("gridNumber", 2);
-  const totalProductsPerPage = 10;
+
+  const { data, isLoading, isError, error } = useAllProductsData({
+    page,
+    preference,
+    quantityFilter,
+    sort,
+    minPrice,
+    maxPrice,
+    size,
+  });
 
   const handleNextPage = () => {
     const pagesCount = Math.ceil(data.totalCount / totalProductsPerPage);
     if (page != pagesCount) {
-      setPage((prevPage) => prevPage + 1);
-      setSearchParams(`page=${page + 1}`);
+      searchParams.set("page", `${page + 1}`);
+      setSearchParams(searchParams, { replace: true });
     }
   };
 
   const handleGoToPage = (pageNumber: number) => {
-    setPage(pageNumber);
-    setSearchParams(`page=${pageNumber}`);
+    searchParams.set("page", `${pageNumber}`);
+    setSearchParams(searchParams, { replace: true });
   };
 
   const handlePrevPage = () => {
     if (page > 1) {
-      setPage((prevPage) => prevPage - 1);
-      setSearchParams(`page=${page - 1}`);
+      searchParams.set("page", `${page - 1}`);
+      setSearchParams(searchParams, { replace: true });
     }
   };
-
-  if (isLoading) return <div> This content is Loading</div>;
 
   if (isError) return <div>{error.message}</div>;
 
@@ -77,19 +91,36 @@ const Kitchen = () => {
               <DisplayStyle grid={grid} setGrid={setGrid} />
             </div>
           </div>
-          <div
-            className={`grid ${
-              grid === 4 && "grid-cols-4"
-            } grid-cols-${grid} gap-3 sm:gap-4 py-4`}>
-            {data.products.map((item: ProductCardType, i: number) => (
-              <ProductCard data={item} grid={grid} setGrid={setGrid} key={i} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div
+              className={`grid ${
+                grid === 4 && "grid-cols-4"
+              } grid-cols-${grid} gap-3 sm:gap-4 py-4`}>
+              {[...Array(10)].map((_, i) => (
+                <SkeletonProductCard grid={grid} key={i} />
+              ))}
+            </div>
+          ) : (
+            <div
+              className={`grid ${
+                grid === 4 && "grid-cols-4"
+              } grid-cols-${grid} gap-3 sm:gap-4 py-4 relative `}>
+              {data.products.map((item: ProductCardType, i: number) => (
+                <ProductCard
+                  data={item}
+                  page={page}
+                  grid={grid}
+                  setGrid={setGrid}
+                  key={i}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <Pagination
         page={page}
-        totalProducts={data.totalCount}
+        totalProducts={data && data.totalCount}
         totalProductsPerPage={totalProductsPerPage}
         onNext={handleNextPage}
         onPrev={handlePrevPage}

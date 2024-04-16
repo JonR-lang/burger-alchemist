@@ -3,6 +3,7 @@ import { useFeaturedProductsData } from "@/hooks/useFeaturedProductsData";
 import { ProductCardType } from "@/types/ProductCard.types";
 const Featured = () => {
   const { data, isLoading, isError, error } = useFeaturedProductsData();
+
   if (isLoading) return <div> This content is Loading</div>;
 
   if (isError) return <div>{error.message}</div>;

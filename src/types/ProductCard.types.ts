@@ -11,7 +11,17 @@ export type ProductCardDetails = {
   burgerType: string;
   description: string;
   quantity: number;
-  ratings: string[];
+  ratings: {
+    _id: string;
+    star: number;
+    comment: string;
+    postedBy: {
+      _id: string;
+      firstName: string;
+      lastName: string;
+      picturePath: string;
+    };
+  }[];
   size: string;
   slug: string;
   sold: number;
@@ -22,7 +32,9 @@ export type ProductCardDetails = {
 };
 
 export type ProductCardType = {
+  _id: string;
   name: string;
+  slug: string;
   images: {
     publicId: string;
     url: string;

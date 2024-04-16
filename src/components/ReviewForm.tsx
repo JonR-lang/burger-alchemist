@@ -47,6 +47,7 @@ const ReviewForm = ({ className }: React.ComponentProps<"form">) => {
               onChange={(rating: number) => field.onChange(rating)}
               value={field.value}
               style={{ maxWidth: 140 }}
+              className='focus:outline outline-black outline-2'
             />
           )}
         />
