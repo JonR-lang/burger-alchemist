@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import useFilterByPrice from "@/hooks/filterhooks/useFilterByPrice";
 import useFilterByAvailabillity from "@/hooks/filterhooks/useFilterByAvailabillity";
 
@@ -26,8 +25,14 @@ const MobileFilterBy = () => {
   const [outOfStock, setOutOfStock] = useState(false);
 
   //Price
-  const [priceFrom, setPriceFrom] = useLocalStorage("priceFrom", "");
-  const [priceTo, setPriceTo] = useLocalStorage("priceTo", "");
+  const [priceFrom, setPriceFrom] = useState(() => {
+    const minPrice = searchParams.get("minPrice") || "";
+    return parseInt(minPrice);
+  });
+  const [priceTo, setPriceTo] = useState(() => {
+    const maxPrice = searchParams.get("maxPrice") || "";
+    return parseInt(maxPrice);
+  });
   const [priceRangeError, setPriceRangeError] = useState("");
 
   const size = searchParams.getAll("size") || [];
@@ -54,15 +59,15 @@ const MobileFilterBy = () => {
   };
 
   const handlePriceToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPriceTo(e.target.value && parseInt(e.target.value));
-    if (e.target.value > priceFrom) {
+    setPriceTo(parseInt(e.target.value));
+    if (parseInt(e.target.value) > priceFrom) {
       setPriceRangeError("");
     }
   };
 
   const handleResetPriceInputs = () => {
-    setPriceFrom("");
-    setPriceTo("");
+    setPriceFrom(0);
+    setPriceTo(0);
     setPriceRangeError("");
   };
 
@@ -75,7 +80,7 @@ const MobileFilterBy = () => {
             <MdOutlineKeyboardArrowDown fontSize={20} className='mt-[2px]' />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className='md:hidden block   translate-x-[4.6%] w-[91.5vw] rounded-tr-none rounded-tl-none '>
+        <DropdownMenuContent className='md:hidden block translate-x-[4.6%] w-[91.5vw] rounded-tr-none rounded-tl-none '>
           <DropdownMenuLabel className='font-bold'>
             Availability
           </DropdownMenuLabel>
@@ -105,9 +110,9 @@ const MobileFilterBy = () => {
                     type='number'
                     name='from'
                     onBlur={() => setPriceRangeError("")}
-                    value={priceFrom}
+                    value={priceFrom || 0}
                     onChange={(e) => {
-                      setPriceFrom(e.target.value);
+                      setPriceFrom(parseInt(e.target.value));
                     }}
                     id='from'
                     className='w-full p-1 border rounded focus:outline-none shadow-sm text-base'
@@ -120,7 +125,7 @@ const MobileFilterBy = () => {
                     inputMode='numeric'
                     name='to'
                     onBlur={() => setPriceRangeError("")}
-                    value={priceTo}
+                    value={priceTo || 0}
                     onChange={handlePriceToInput}
                     id='to'
                     className='w-full p-1 border rounded focus:outline-none shadow-sm text-base'

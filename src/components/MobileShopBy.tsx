@@ -15,10 +15,15 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 const MobileShopBy = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleClick = (preference: string) => {
+  const handleFilter = (preference: string) => {
     searchParams.set("dietaryPreference", preference);
     searchParams.set("page", "1");
     setSearchParams(searchParams, { replace: true });
+  };
+
+  const removeFilters = () => {
+    const newSearchParams = new URLSearchParams();
+    setSearchParams(newSearchParams);
   };
 
   return (
@@ -38,10 +43,13 @@ const MobileShopBy = () => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {dietaryPreferences.map((item, i) => (
-            <DropdownMenuItem key={i} onClick={() => handleClick(item.name)}>
+            <DropdownMenuItem key={i} onClick={() => handleFilter(item.name)}>
               {item.name}
             </DropdownMenuItem>
           ))}
+          <DropdownMenuItem onClick={removeFilters} className='font-bold'>
+            Remove filters
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

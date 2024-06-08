@@ -1,90 +1,137 @@
-import BlogImage from "../assets/hamburger-icon-1.png";
+import { useBlogData } from "@/hooks/queryhooks/useBlogData";
+import { useToggleLikeBlog } from "@/hooks/queryhooks/useToggleLikeBlog";
 
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useErrorBoundary } from "react-error-boundary";
 
 import { badgeVariants } from "@/components/ui/badge";
+import { useToast } from "@/components/ui/use-toast";
 
-import { CiHeart } from "react-icons/ci";
-import { FaComments } from "react-icons/fa";
-import BlogCard from "@/components/BlogCard";
+import { PiHeartFill, PiHeartLight } from "react-icons/pi";
+
+import RecommendedBlogs from "@/components/RecommendedBlogs";
+import { useEffect } from "react";
+import scrollToTop from "@/utils/scrollToTop";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import BlogDetailSkeleton from "@/components/skeletonui/BlogDetailSkeleton";
 
 const BlogDetails = () => {
+  const savedUser = useSelector((state: RootState) => state.auth.user)!;
+  const { id } = useParams();
+  const { toast } = useToast();
+  const { showBoundary } = useErrorBoundary();
+
+  //Check if Id exists before using it.
+  if (!id) {
+    // Handle the case when id is undefined
+    return <div>No product ID provided</div>;
+  }
+
+  const { data, isLoading, isError, error } = useBlogData({ blogId: id });
+
+  const { mutate, isPending } = useToggleLikeBlog({
+    blogId: id,
+    userId: savedUser?.id,
+  });
+
+  const toggleLike = () => {
+    if (!savedUser) {
+      toast({
+        description: "You have to log in to do that!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    mutate(data, {
+      onError: (error) => {
+        toast({
+          description: error.message,
+          variant: "destructive",
+        });
+      },
+    });
+  };
+
+  useEffect(() => {
+    scrollToTop();
+  }, [id]);
+
+  useEffect(() => {
+    if (isError) {
+      showBoundary(error);
+    }
+  }, [isError, error, showBoundary]);
+
+  if (isLoading) return <BlogDetailSkeleton />;
+
+  const parsedText = data && data.body && data.body.replace(/\\n/g, "<br>");
+
+  const isLiked = data.likes.findIndex((id: string) => id === savedUser?.id);
+
   return (
     <div className='flex flex-col gap-3 w-full max-w-3xl mx-auto'>
       <h1 className='text-center text-3xl sm:text-4xl lg:text-5xl font-semibold md:my-2'>
-        Blog Title
+        {data.title}
       </h1>
       <div>
         <figure>
           <img
-            src={BlogImage}
-            alt='blog-image'
-            className='w-full aspect-video object-cover bg-red-200'
+            src={data.images[0].url}
+            alt={data.title}
+            className='w-full aspect-video object-cover'
           />
         </figure>
-        <div className='text-sm flex items-center justify-between text-neutral-500'>
+        <div className='text-sm flex items-center justify-between text-neutral-500 mt-1'>
           <p>By Admin</p>
-          <p>20 views</p>
+          <p>{data.views} views</p>
         </div>
       </div>
 
       <div className='space-x-2'>
-        {Array(4)
-          .fill("eddy")
-          .map((item, i) => (
-            <Link
-              key={i}
-              to='/'
-              className={`${badgeVariants({
-                variant: "secondary",
-              })} bg-neutral-200`}>
-              tag
-            </Link>
-          ))}
+        <p
+          className={`${badgeVariants({
+            variant: "secondary",
+          })} bg-neutral-200`}>
+          {data.category.title}
+        </p>
       </div>
 
-      <article className='mt-2'>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, sequi
-        aspernatur! Quisquam consequuntur quibusdam recusandae optio explicabo
-        obcaecati cum voluptatem iure. Nam rem deserunt praesentium debitis
-        quis, quam porro. Perferendis optio laborum minima unde numquam ex
-        exercitationem velit atque odio repudiandae nulla, vel consequatur iusto
-        neque obcaecati, id, adipisci nostrum rem quaerat maiores sint at
-        dolore? Deserunt ex delectus, temporibus provident, facilis atque
-        aperiam natus, unde earum numquam magni perferendis consequuntur amet
-        tempore consequatur inventore officiis voluptatem voluptatibus ipsam
-        veritatis culpa quidem iure dolor laudantium? Beatae nemo omnis
-        consectetur itaque sed ducimus reprehenderit praesentium recusandae! Hic
-        ratione deserunt impedit dignissimos?
-      </article>
+      <article
+        className='mt-2'
+        dangerouslySetInnerHTML={{ __html: parsedText }}></article>
 
       <div className='border-t pt-3 text-neutral-500 flex gap-3 items-center'>
-        <div className='flex items-center gap-[2px]'>
-          <button>
-            <CiHeart fontSize={25} aria-hidden={true} />
-            <span className='sr-only'>Like article</span>
+        <div className='flex items-center gap-1'>
+          <button
+            onClick={toggleLike}
+            disabled={isPending}
+            aria-disabled={isPending}>
+            {isLiked === -1 ? (
+              <>
+                <PiHeartLight fontSize={25} aria-hidden={true} />
+                <span className='sr-only'>Like article</span>
+              </>
+            ) : (
+              <>
+                <PiHeartFill
+                  fontSize={25}
+                  aria-hidden={true}
+                  className='text-red-600'
+                />
+                <span className='sr-only'>Unlike article</span>
+              </>
+            )}
           </button>
-          <p className='text-sm mt-[3px]'>{"50"}</p>
-        </div>
-        <div className='flex items-center gap-[2px]'>
-          <button className='text-neutral-400'>
-            <FaComments fontSize={25} aria-hidden={true} />
-            <span className='sr-only'>Like article</span>
-          </button>
-          <p className='text-sm mt-[3px]'>{"31"}</p>
+          <p className='text-sm'>{data.likes.length}</p>
         </div>
       </div>
       <div>
         <h3 className='text-xl sm:text-2xl lg:text-3xl font-semibold my-3'>
           You may also like
         </h3>
-        <div className='flex md:grid grid-cols-responsive-grid gap-3 overflow-x-auto pb-4'>
-          {Array(3)
-            .fill(3)
-            .map((item, i) => (
-              <BlogCard key={i} />
-            ))}
-        </div>
+        <RecommendedBlogs category={data.category._id} />
       </div>
     </div>
   );

@@ -1,8 +1,12 @@
+import { useNavigate, useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { useLoginUser } from "@/hooks/queryhooks/useLogin";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
+import { useDispatch } from "react-redux";
+import { loginUser } from "@/features/auth/authSlice";
 
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
@@ -16,6 +20,13 @@ const formSchema = z.object({
 });
 
 const LoginForm = ({ className }: React.ComponentProps<"form">) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
+  const dispatch = useDispatch();
+
+  const redirectPath = location.state?.path || "/";
+
   const {
     register,
     handleSubmit,
@@ -23,10 +34,23 @@ const LoginForm = ({ className }: React.ComponentProps<"form">) => {
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const { mutate: login, isPending } = useLoginUser();
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    login(values, {
+      onSuccess: (data) => {
+        dispatch(loginUser(data));
+        navigate(redirectPath, { replace: true });
+      },
+      onError: (error) => {
+        toast({
+          title: error.message,
+          variant: "destructive",
+        });
+      },
+    });
   }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -48,6 +72,7 @@ const LoginForm = ({ className }: React.ComponentProps<"form">) => {
       <br />
       <Button
         type='submit'
+        disabled={isPending}
         className='bg-accent-one h-11 sm:h-auto font-bold tracking-wider text-base md:text-sm'>
         Login
       </Button>

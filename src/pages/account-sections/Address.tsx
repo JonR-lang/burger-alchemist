@@ -1,17 +1,19 @@
 import EditAddress from "@/components/EditAddress";
 import { FaLocationDot } from "react-icons/fa6";
+import { UserAddress } from "@/types/User.types";
 
-type IdProp = {
+type AddressProp = {
   id?: string;
+  address: UserAddress;
 };
-const Address = ({ id }: IdProp) => {
+const Address = ({ id, address }: AddressProp) => {
   return (
     <section id={id}>
       <div className='pb-1 lg:pb-2 border-b flex justify-between items-center'>
         <h1 className='text-xl md:text-3xl xl:text-4xl font-semibold tracking-wide'>
           My Address
         </h1>
-        <EditAddress />
+        <EditAddress address={address} />
       </div>
       <div className='py-3'>
         <div className='px-3 py-5 border bg-neutral-100 rounded-lg flex items-center gap-3'>
@@ -22,10 +24,10 @@ const Address = ({ id }: IdProp) => {
           />
           <div>
             <p className='text-neutral-500 italic'>
-              11 Nkechi Gbujie Avenue, Abayi, Aba, Abia State
+              {`${address.street}, ${address.city}, ${address.state} state.`}
             </p>
             <p className='text-neutral-500 italic'>
-              Landmark: St. Bridget's College{" "}
+              Landmark: {address.landmark ? address.landmark : "None provided"}
             </p>
           </div>
         </div>

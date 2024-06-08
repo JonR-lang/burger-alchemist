@@ -51,7 +51,7 @@ const PaginationWrapper = ({
 
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(
-        <PaginationItem key={i}>
+        <PaginationItem key={i} className='cursor-pointer'>
           <PaginationLink isActive={i === page} onClick={() => onGoToPage(i)}>
             {i}
           </PaginationLink>

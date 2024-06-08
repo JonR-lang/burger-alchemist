@@ -10,9 +10,10 @@ const Contact = () => {
         <div className='max-w-3xl w-full mx-auto text-center py-4 flex flex-col gap-4 text-amber-900'>
           <h1 className='text-4xl font-semibold'>Get In Touch</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut suscipit
-            illum nisi. Nulla alias hic, repellendus consequatur, enim, nesciunt
-            ?
+            For any questions or concerns regarding your orders, deliveries, or
+            products, please refer to the contact information below. Our
+            customer support team is here to assist you with any issues you may
+            encounter.
           </p>
         </div>
 
@@ -23,8 +24,9 @@ const Contact = () => {
                 Contact information
               </h3>
               <p className='md:text-xs'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae a
-                repellat.
+                This section contains key contact information for our company.
+                Use these details for inquiries, support, or feedback. Accurate
+                communication helps us serve you better.
               </p>
               <div className='flex flex-col gap-4 flex-1'>
                 <span className='flex items-center gap-1 md:text-xs'>
@@ -42,21 +44,21 @@ const Contact = () => {
               </div>
               <div className='flex gap-2 text-amber-900 self-center'>
                 <a
-                  href='https://twitter.com'
+                  href='https://facebook.com'
                   target='_blank'
                   rel='noopener noreferrer'
                   aria-label='Facebook'>
                   <FaFacebookSquare fontSize={25} aria-hidden={true} />
                 </a>
                 <a
-                  href='https://twitter.com'
+                  href='https://twitter.com/iroelejohnny'
                   target='_blank'
                   rel='noopener noreferrer'
                   aria-label='Twitter'>
                   <FaTwitterSquare fontSize={25} aria-hidden={true} />
                 </a>
                 <a
-                  href='https://twitter.com'
+                  href='https://instagram.com/ynnhoj.r'
                   target='_blank'
                   rel='noopener noreferrer'
                   aria-label='Instagram'>

@@ -3,15 +3,15 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { Button } from "@/components/ui/button";
-import useMediaQuery from "@/hooks/useMediaQuery";
+import AddressForm from "./AddressForm";
 
 import { MdEdit } from "react-icons/md";
 
-import { userAddress } from "@/data/mockUserData";
+import { Button } from "@/components/ui/button";
+import { useToast } from "./ui/use-toast";
+import useMediaQuery from "@/hooks/utilityHooks/useMediaQuery";
 
-import AddressForm from "./AddressForm";
+import { useSaveAddress } from "@/hooks/queryhooks/useSaveAddress";
 
 import {
   Dialog,
@@ -33,6 +33,12 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
+import { UserAddress } from "@/types/User.types";
+
+type EditAddressProp = {
+  address: UserAddress;
+};
+
 const formSchema = z.object({
   state: z.string().min(2, {
     message: "State must be at least 2 characters",
@@ -46,20 +52,35 @@ const formSchema = z.object({
   landmark: z.string().optional(),
 });
 
-const EditAddress = () => {
+const EditAddress = ({ address }: EditAddressProp) => {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const { toast } = useToast();
+  const { mutate: saveAddress, isPending } = useSaveAddress();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: userAddress,
+    defaultValues: address,
   });
 
-  const { handleSubmit, getValues, setValue, resetField, clearErrors, reset } =
-    form;
+  const { handleSubmit } = form;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    saveAddress(values, {
+      onSuccess: () => {
+        toast({
+          description: "Address saved!",
+          variant: "yellowBorder",
+        });
+        setOpen(false);
+      },
+      onError: () => {
+        toast({
+          description: "An Error occured. Try again later.",
+          variant: "destructive",
+        });
+      },
+    });
   }
 
   if (isDesktop) {
@@ -110,6 +131,8 @@ const EditAddress = () => {
           <AddressForm form={form} className='w-full flex flex-col gap-3' />
           <Button
             type='submit'
+            disabled={isPending}
+            aria-disabled={isPending}
             className='bg-accent-one h-11 sm:h-auto font-bold tracking-wider text-base md:text-sm mt-3 w-full'>
             Save Changes
           </Button>

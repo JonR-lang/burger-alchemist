@@ -1,12 +1,13 @@
-import AlertDialogComponent from "@/components/AlertDialog";
+import AlertDialogLogout from "@/components/AlertDialogLogout";
+import ChangePassword from "@/components/ChangePassword";
 
 import { CiWarning } from "react-icons/ci";
 
-type IdProp = {
+type SettingProp = {
   id?: string;
 };
 
-const Settings = ({ id }: IdProp) => {
+const Settings = ({ id }: SettingProp) => {
   return (
     <section id={id}>
       <div className='pb-1 lg:pb-2 border-b flex justify-between items-center'>
@@ -15,12 +16,13 @@ const Settings = ({ id }: IdProp) => {
         </h1>
       </div>
       <div className='flex flex-col gap-3 my-3'>
+        <ChangePassword />
+        <AlertDialogLogout variant='logout' />
         <div className='flex gap-1 items-center'>
           <CiWarning fontSize={25} className='text-yellow-500' />
           <h4 className=''>Danger Zone!</h4>
         </div>
-        <AlertDialogComponent variant='logout' />
-        <AlertDialogComponent variant='delete' />
+        <AlertDialogLogout variant='delete' />
       </div>
     </section>
   );

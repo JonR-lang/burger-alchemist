@@ -60,7 +60,7 @@ const FilterBy = ({ className }: classProp) => {
             <RadioGroupItem value='in-stock' id='in-stock' className='size-3' />
             <label
               htmlFor='in-stock'
-              className='text-xs cursor-pointer text-zinc-500 lowercase'>
+              className='text-xs cursor-pointer text-zinc-500 hover:text-neutral-800 lowercase'>
               In Stock
             </label>
           </div>
@@ -72,7 +72,7 @@ const FilterBy = ({ className }: classProp) => {
             />
             <label
               htmlFor='out-of-stock'
-              className='text-xs cursor-pointer text-zinc-500 lowercase'>
+              className='text-xs cursor-pointer text-zinc-500 hover:text-neutral-800 lowercase'>
               Out of Stock
             </label>
           </div>
@@ -90,13 +90,12 @@ const FilterBy = ({ className }: classProp) => {
               type='number'
               name='from'
               onBlur={() => setPriceRangeError("")}
-              value={priceFrom}
+              value={priceFrom || 0}
               onChange={(e) => {
-                console.log(e.target.value);
                 setPriceFrom(parseInt(e.target.value));
               }}
               id='from'
-              className='w-full p-1 border rounded focus:outline-none shadow-sm'
+              className='w-full p-1 border rounded  focus:outline-none focus:border-neutral-600  shadow-sm'
             />
           </div>
           <div>
@@ -108,10 +107,10 @@ const FilterBy = ({ className }: classProp) => {
               inputMode='numeric'
               name='to'
               onBlur={() => setPriceRangeError("")}
-              value={priceTo}
+              value={priceTo || 0}
               onChange={handlePriceToInput}
               id='to'
-              className='w-full p-1 border rounded focus:outline-none shadow-sm'
+              className='w-full p-1 border rounded focus:outline-none focus:border-neutral-600 shadow-sm'
             />
           </div>
         </div>
@@ -147,7 +146,7 @@ const FilterBy = ({ className }: classProp) => {
           />
           <label
             htmlFor='single'
-            className='text-xs text-zinc-500 cursor-pointer'>
+            className='text-xs text-zinc-500 cursor-pointer hover:text-neutral-800'>
             single
           </label>
         </div>
@@ -161,7 +160,7 @@ const FilterBy = ({ className }: classProp) => {
           />
           <label
             htmlFor='double'
-            className='text-xs text-zinc-500 cursor-pointer'>
+            className='text-xs text-zinc-500 cursor-pointer hover:text-neutral-800'>
             double
           </label>
         </div>
@@ -175,7 +174,7 @@ const FilterBy = ({ className }: classProp) => {
           />
           <label
             htmlFor='triple'
-            className='text-xs text-zinc-500 cursor-pointer'>
+            className='text-xs text-zinc-500 cursor-pointer hover:text-neutral-800'>
             triple
           </label>
         </div>

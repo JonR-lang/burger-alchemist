@@ -1,32 +1,39 @@
-import Burger from "../assets/hero-2.png";
-
 //For react-rating
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 
-type ClassProp = {
+type ProductSnippetProp = {
   className?: string;
+  name: string;
+  image: string;
+  totalRatings: number;
+  price: number;
 };
 
-const ProductSnippet = ({ className }: ClassProp) => {
+const ProductSnippet = ({
+  className,
+  name,
+  image,
+  totalRatings,
+  price,
+}: ProductSnippetProp) => {
+  //note that the parent div was given a padding of 0 because of its situation in the cart page. Also the size of the text of the product name is also reduced because of same reason.
   return (
-    <div className={`${className} p-2 rounded flex gap-1 items-center`}>
-      <figure className='size-24 rounded'>
-        <img
-          src={Burger}
-          alt='product-item'
-          className='size-full object-cover'
-        />
+    <div className={`${className} p-0 sm:p-2 rounded flex gap-1 items-center`}>
+      <figure className='size-24 min-w-24 rounded'>
+        <img src={image} alt={name} className='size-full object-cover' />
       </figure>
-      <div className='space-y-1'>
-        <h4 className='text-base font-semibold leading-4'>Product name</h4>
+      <div className='space-y-2'>
+        <h4 className='text-sm font-semibold leading-4 text-neutral-900'>
+          {name}
+        </h4>
         <Rating
           style={{ maxWidth: 79 }}
-          value={3.7}
+          value={totalRatings}
           readOnly={true}
           className='-ml-[3px] -translate-y-1'
         />
-        <span className='text-base font-bold'>{"$30"}</span>
+        <span className='text-base font-bold text-accent-one'>${price}</span>
       </div>
     </div>
   );

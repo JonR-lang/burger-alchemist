@@ -33,7 +33,7 @@ export default function Banner({
         clickable: true,
       }}
       modules={[Autoplay, Pagination]}
-      className={`flex  ${
+      className={`flex relative  ${
         hideOnMobile && "hidden md:flex"
       } flex-col md:flex-row w-full gap-3 mt-4`}>
       {structure.map(({ template, colorObj, data }, i) => (

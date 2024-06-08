@@ -30,7 +30,7 @@ type AddressProp = {
   useSavedAddress?: boolean;
 };
 
-const AddressForm = ({ className, form, useSavedAddress }: AddressProp) => {
+const AddressForm = ({ className, form }: AddressProp) => {
   const [cities, setCities] = useState<string[] | undefined>();
 
   const {

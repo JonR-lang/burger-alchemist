@@ -1,3 +1,4 @@
+import { useParams, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -9,12 +10,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { IoMdArrowBack } from "react-icons/io";
 
 import { cn } from "@/lib/utils";
 
 import { Button } from "../components/ui/button";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+
+import { useResetPassword } from "@/hooks/queryhooks/useResetPassword";
 
 const formSchema = z
   .object({
@@ -38,6 +43,9 @@ const formSchema = z
   });
 
 const ForgotPassword = ({ className }: React.ComponentProps<"form">) => {
+  const { token } = useParams();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -45,13 +53,53 @@ const ForgotPassword = ({ className }: React.ComponentProps<"form">) => {
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const { mutate: resetPassword, isPending } = useResetPassword();
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    if (!token) {
+      toast({
+        description: "Token is missing",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { password } = values;
+    const resetCredentials = {
+      token,
+      password,
+    };
+    resetPassword(resetCredentials, {
+      onSuccess: () => {
+        toast({
+          title: "Password reset successfully",
+          description: "You will be redirected to the log in page shortly!",
+        });
+        setTimeout(() => {
+          navigate("/login");
+        }, 3500);
+      },
+      onError: (error) => {
+        toast({
+          description: error.message,
+          variant: "destructive",
+        });
+      },
+    });
   }
   return (
     <div className='grid place-content-center w-full min-h-screen place-items-center p-2 burger-pattern overflow-y-auto'>
       <div id='overlay' className='bg-white/80 fixed inset-0'></div>
+      <button
+        onClick={() => navigate(-1)}
+        className='border border-primary-two rounded-full p-2 shadow fixed top-4 left-4 z-20 bg-white'>
+        <IoMdArrowBack
+          fontSize={30}
+          aria-hidden={true}
+          className='text-neutral-500'
+        />
+        <span className='sr-only'>Go Back to previous page.</span>
+      </button>
       <Card className='pb-2 w-full max-w-md relative'>
         <CardHeader>
           <CardTitle>Reset Password</CardTitle>
@@ -90,6 +138,7 @@ const ForgotPassword = ({ className }: React.ComponentProps<"form">) => {
             <br />
             <Button
               type='submit'
+              disabled={isPending}
               className='bg-accent-one h-11 sm:h-auto font-bold tracking-wider text-base md:text-sm'>
               Submit
             </Button>

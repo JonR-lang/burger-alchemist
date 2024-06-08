@@ -1,10 +1,25 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Order } from "@/types/Order.types";
+import { useAllUserOrders } from "@/hooks/queryhooks/useAllUserOrdersData";
+import { format } from "date-fns";
+import OrderListItemSkeleton from "@/components/skeletonui/OrderListItemSkeleton";
+import { useErrorBoundary } from "react-error-boundary";
 
-type IdProp = {
+type OrderProp = {
   id?: string;
 };
 
-const Orders = ({ id }: IdProp) => {
+const Orders = ({ id }: OrderProp) => {
+  const { data, isLoading, isError, error } = useAllUserOrders();
+  const { showBoundary } = useErrorBoundary();
+
+  useEffect(() => {
+    if (isError) {
+      showBoundary(error);
+    }
+  }, [isError, error, showBoundary]);
+
   return (
     <section id={id}>
       <div className='pb-1 lg:pb-2 border-b flex justify-between items-center'>
@@ -27,28 +42,54 @@ const Orders = ({ id }: IdProp) => {
           </div>
         </div>
         <ul className='flex flex-col gap-3'>
-          {Array(3)
-            .fill("e")
-            .map((item, i) => (
+          {isLoading &&
+            [...Array(4)].map((_, i: number) => (
+              <OrderListItemSkeleton key={i} />
+            ))}
+          {data &&
+            data.slice(0, 4).map((item: Order, i: number) => (
               <li
                 key={i}
-                className='rounded-lg p-3 border flex flex-col gap-2 relative'>
-                <p className='font-semibold'>Order Id: 302984284028423</p>
-                <p className='text-sm'>
-                  On the 13th of March, you ordered mammy water burger, reeze
-                  burger and others worth 23$.
-                </p>
-                <p className='text-neutral-500 text-xs italic'>
-                  13th March, 2024
-                </p>
-                <span
-                  aria-label='Delivered'
-                  className='size-2 absolute inline-block bg-green-500 bottom-4 rounded-full right-3'></span>
+                className='rounded-lg p-3 border flex flex-col gap-2 relative shadow-custom-a'>
+                <Link to={`/orders/${item._id}`} className='size-full'>
+                  <p className='font-semibold'>Order Id: {item._id}</p>
+                  <p className='text-sm'>
+                    {"On "}
+                    <span className='font-semibold'>
+                      {format(item.createdAt, "PPPP")},
+                    </span>
+                    <span> you ordered </span>
+                    {item.items.length === 1 &&
+                      item.items.map((item) => item.product.name) +
+                        ` worth $${item.totalAmount}.`}
+                    {item.items.length === 2 &&
+                      item.items.map(
+                        (item) => " " + item.product.name + " and"
+                      ) + ` worth $${item.totalAmount}.`}
+                    {item.items.length > 2 &&
+                      item.items
+                        .slice(0, 2)
+                        .map((item) => " " + item.product.name) +
+                        ` and others worth $${item.totalAmount}.`}
+                  </p>
+                  <p className='text-neutral-500 text-xs italic'>
+                    {format(item.createdAt, "PPP")}
+                  </p>
+                  <span
+                    aria-label='status'
+                    className={`size-2 absolute inline-block ${
+                      item.status == "pending" && "bg-orange-400"
+                    } ${item.status == "delivered" && "bg-green-500"} ${
+                      item.status == "cancelled" && "bg-red-500"
+                    } bottom-4 rounded-full right-3`}></span>
+                </Link>
               </li>
             ))}
         </ul>
       </div>
-      <Link to={"/orders"} className='inline-block underline my-2'>
+      <Link
+        to={"/orders"}
+        className='inline-block md:underline my-2 bg-neutral-800 md:bg-transparent text-white md:text-black rounded md:rounded-none w-full md:w-auto text-center p-2 md:p-0'>
         View More
       </Link>
     </section>

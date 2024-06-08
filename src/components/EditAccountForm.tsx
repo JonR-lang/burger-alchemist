@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,8 +16,17 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { useToast } from "./ui/use-toast";
 
-import { user } from "@/data/mockUserData";
+import { useEditUserData } from "@/hooks/queryhooks/useEditUserData";
+
+import { User } from "@/types/User.types";
+import { RootState } from "@/store/store";
+
+type EAFProp = {
+  user: User;
+  setOpen: (value: boolean) => void;
+};
 
 const formSchema = z.object({
   firstName: z
@@ -34,10 +44,17 @@ const formSchema = z.object({
     .min(10, { message: "Number should be greater than or equals to 10" }),
 });
 
-const EditAccountForm = ({ className }: React.ComponentProps<"form">) => {
+const EditAccountForm = ({
+  className,
+  user,
+  setOpen,
+}: React.ComponentProps<"form"> & EAFProp) => {
+  const savedUser = useSelector((state: RootState) => state.auth.user)!;
   const [country, setCountry] = useState<Country>("NG");
   const [value, setValue] = useState();
   const [showCountryCode, setShowCountryCode] = useState<boolean>(false);
+  const { mutate: updateAccount, isPending } = useEditUserData();
+  const { toast } = useToast();
 
   useEffect(() => {
     setTimeout(() => {
@@ -60,14 +77,33 @@ const EditAccountForm = ({ className }: React.ComponentProps<"form">) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      mobile: user.mobile,
+      mobile: user.mobile.startsWith("0")
+        ? `+234${user.mobile.slice(1)}`
+        : user.mobile, //This was done so that the number must start with +234, to reflect properly in the UI
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    updateAccount(
+      { user: values, userId: savedUser.id },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          toast({
+            variant: "yellowBorder",
+            description: "Account updated successfully!",
+          });
+          setOpen(false);
+        },
+        onError: () => {
+          toast({
+            variant: "destructive",
+            description: "Something went wrong. Try again later.",
+          });
+        },
+      }
+    );
   }
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -121,7 +157,9 @@ const EditAccountForm = ({ className }: React.ComponentProps<"form">) => {
       <br />
       <Button
         type='submit'
-        className='bg-accent-one h-11 sm:h-auto font-bold tracking-wider text-base md:text-sm'>
+        className='bg-accent-one h-11 sm:h-auto font-bold tracking-wider text-base md:text-sm'
+        disabled={isPending}
+        aria-disabled={isPending}>
         Save Changes
       </Button>
     </form>

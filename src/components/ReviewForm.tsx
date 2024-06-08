@@ -4,21 +4,31 @@ import { z } from "zod";
 
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
+import { useToast } from "./ui/use-toast";
 
 import { Rating } from "@smastrom/react-rating";
 import { cn } from "@/lib/utils";
+import { useRateProduct } from "@/hooks/queryhooks/useRateProduct";
 
 const formSchema = z.object({
-  rating: z
+  star: z
     .number()
     .min(1, { message: "This field is required" })
     .max(5, { message: "Must not be more than 5" }),
-  review: z.string().min(5, {
+  comment: z.string().min(5, {
     message: "Message must contain more than 5 characters.",
   }),
 });
 
-const ReviewForm = ({ className }: React.ComponentProps<"form">) => {
+type ReviewFormProp = React.ComponentProps<"form"> & {
+  productId: string;
+  setOpen: (value: boolean) => void;
+};
+
+const ReviewForm = ({ className, productId, setOpen }: ReviewFormProp) => {
+  const { toast } = useToast();
+  const { mutate: rateProduct, isPending: isRating } =
+    useRateProduct(productId);
   const {
     register,
     handleSubmit,
@@ -29,7 +39,26 @@ const ReviewForm = ({ className }: React.ComponentProps<"form">) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    rateProduct(
+      { rating: values, productId },
+      {
+        onSuccess: () => {
+          toast({
+            description: "Review submitted successfully!",
+            variant: "yellowBorder",
+          });
+        },
+        onError: (error) => {
+          toast({
+            description: error.message,
+            variant: "destructive",
+          });
+        },
+        onSettled: () => {
+          setOpen(false);
+        },
+      }
+    );
   }
 
   return (
@@ -37,9 +66,9 @@ const ReviewForm = ({ className }: React.ComponentProps<"form">) => {
       onSubmit={handleSubmit(onSubmit)}
       className={cn("grid items-start gap-4", className)}>
       <div className='grid gap-2'>
-        <Label htmlFor='rating'>Score</Label>
+        <Label htmlFor='star'>Score</Label>
         <Controller
-          name='rating'
+          name='star'
           control={control}
           defaultValue={0}
           render={({ field }) => (
@@ -51,23 +80,27 @@ const ReviewForm = ({ className }: React.ComponentProps<"form">) => {
             />
           )}
         />
-        {errors.rating?.message && (
-          <p className='text-red-600 text-sm'>{errors.rating?.message}</p>
+        {errors.star?.message && (
+          <p className='text-red-600 text-sm'>{errors.star?.message}</p>
         )}
       </div>
 
       <div className='grid gap-2'>
         <Label htmlFor='review'>Review</Label>
         <textarea
-          id='review'
-          {...register("review")}
+          id='comment'
+          {...register("comment")}
           className='border w-full h-40 p-1'></textarea>
-        {errors.review?.message && (
-          <p className='text-red-600 text-sm'>{errors.review?.message}</p>
+        {errors.comment?.message && (
+          <p className='text-red-600 text-sm'>{errors.comment?.message}</p>
         )}
       </div>
 
-      <Button type='submit' className='bg-accent-one'>
+      <Button
+        type='submit'
+        className='bg-accent-one'
+        disabled={isRating}
+        aria-disabled={isRating}>
         Save changes
       </Button>
     </form>

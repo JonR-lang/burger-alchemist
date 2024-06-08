@@ -8,7 +8,7 @@ import ResetPassword from "./pages/ResetPassword";
 import { Toaster } from "@/components/ui/toaster";
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 3 } },
+  defaultOptions: { queries: { retry: 2 } },
 });
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route path='/login' element={<LoginPage />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/reset-password/:token' element={<ResetPassword />} />
           <Route path='/*' element={<Pages />} />
         </Routes>
         <Toaster />

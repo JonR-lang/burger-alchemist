@@ -41,8 +41,11 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"],
       },
       gridTemplateColumns: {
-        "responsive-grid": "repeat(auto-fit, minmax(200px, 1fr))",
-        "responsive-grid-mobile": "repeat(auto-fit, minmax(150px, 1fr))",
+        "responsive-grid": "repeat(auto-fill, minmax(200px, 1fr))",
+        "responsive-grid-mobile": "repeat(auto-fill, minmax(150px, 1fr))",
+      },
+      boxShadow: {
+        "custom-a": "1px 1px 30px 4px rgba(0, 0, 0, 0.05)",
       },
     },
   },

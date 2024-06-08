@@ -1,3 +1,13 @@
+import { useSearchParams } from "react-router-dom";
+import { useAllBlogCategoriesData } from "@/hooks/queryhooks/useAllBlogCategories";
+import { getFirstLetterOfName } from "@/utils/getFirstLettersofNames";
+
+//Icon Imports
+import {
+  MdOutlineKeyboardArrowRight,
+  MdOutlineKeyboardArrowLeft,
+} from "react-icons/md";
+
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -8,15 +18,40 @@ import "swiper/css/pagination";
 // import required modules
 import { Navigation } from "swiper/modules";
 
-import BurgerImage from "../assets/hero-2.png";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "./ui/skeleton";
 
-//Icon Imports
-import {
-  MdOutlineKeyboardArrowRight,
-  MdOutlineKeyboardArrowLeft,
-} from "react-icons/md";
+type BlogCategoryType = {
+  createdAt: string;
+  title: string;
+  updatedAt: string;
+  __v: number;
+  _id: string;
+};
 
 export default function BlogCategories() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { data, isLoading, isError, error } = useAllBlogCategoriesData();
+
+  const handleCategoryChange = (id: string) => {
+    searchParams.set("category", id);
+    setSearchParams(searchParams, { replace: true });
+  };
+
+  if (isLoading) {
+    return (
+      <div className='flex gap-3'>
+        <Skeleton className='w-full h-[110px]' />
+        <Skeleton className='w-full h-[110px] hidden sm:block' />
+        <Skeleton className='w-full h-[110px] hidden sm:block' />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <section>
       <div className='w-full flex justify-between items-center py-2 mb-3'>
@@ -50,23 +85,29 @@ export default function BlogCategories() {
             spaceBetween: 12,
           },
         }}>
-        {Array(4)
-          .fill("red")
-          .map((item, i) => (
+        {data &&
+          data.map((item: BlogCategoryType, i: number) => (
             <SwiperSlide
               key={i}
               className='bg-white rounded-lg py-4 px-4 shadow border'>
-              <figure className='flex gap-3 items-center overflow-hidden'>
-                <img
-                  src={BurgerImage}
-                  alt='burger-image'
-                  className='object-cover size-20 rounded-full border'
-                />
-                <figcaption className='flex flex-col'>
-                  <h3>Category caption</h3>
-                  <p>21 articles</p>
-                </figcaption>
-              </figure>
+              <button
+                className='flex gap-3 items-center overflow-hidden w-full'
+                onClick={() => handleCategoryChange(item._id)}>
+                <Avatar className='size-20'>
+                  <AvatarImage
+                    src={`https://source.unsplash.com/random/?${item.title}`}
+                    className='block object-cover size-full rounded-full border'
+                    alt={item.title}
+                  />
+                  <AvatarFallback>
+                    {getFirstLetterOfName(item.title)}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className='flex flex-col items-start'>
+                  <h3 className='text-xl'>{item.title}</h3>
+                </div>
+              </button>
             </SwiperSlide>
           ))}
       </Swiper>

@@ -24,7 +24,7 @@ input[type="number"] {
 }
 
 .burger-pattern {
-  background: url("../public/seamless-pattern-with-burger-on-a-white-background-vector-repeating-texture.jpg");
+  background: url("../seamless-pattern-with-burger-on-a-white-background-vector-repeating-texture.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }

@@ -6,6 +6,7 @@ import WriteReview from "./WriteReview";
 import { calculatePercentageAverage } from "@/utils/calculatePercentageAverage";
 
 type RatingsReviewProp = {
+  productId: string;
   totalRatings: number;
   ratings: {
     _id: string;
@@ -20,7 +21,11 @@ type RatingsReviewProp = {
   }[];
 };
 
-const RatingsReview = ({ totalRatings, ratings }: RatingsReviewProp) => {
+const RatingsReview = ({
+  totalRatings,
+  ratings,
+  productId,
+}: RatingsReviewProp) => {
   const starsList = ratings.map((rating) => rating.star);
 
   return (
@@ -90,7 +95,7 @@ const RatingsReview = ({ totalRatings, ratings }: RatingsReviewProp) => {
         <div className='flex justify-between items-center text-sm text-neutral-500 mt-2'>
           <p className=''>{`${ratings.length} reviews`}</p>
           <div className='md:hidden'>
-            <WriteReview />
+            <WriteReview productId={productId} />
           </div>
         </div>
         {ratings.length > 0 ? (
@@ -105,7 +110,7 @@ const RatingsReview = ({ totalRatings, ratings }: RatingsReviewProp) => {
           </p>
         )}
         <div className='hidden md:block'>
-          <WriteReview />
+          <WriteReview productId={productId} />
         </div>
       </div>
     </div>

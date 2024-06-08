@@ -3,3 +3,7 @@ export const getFirstLettersOfNames = (firstName: string, lastName: string) => {
     .charAt(0)
     .toUpperCase()}`;
 };
+
+export const getFirstLetterOfName = (name: string) => {
+  return `${name.charAt(0).toUpperCase()}`;
+};

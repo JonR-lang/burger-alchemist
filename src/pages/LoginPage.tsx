@@ -9,7 +9,7 @@ const LoginPage = () => {
     <div className='grid place-content-center w-full min-h-screen place-items-center p-2 burger-pattern overflow-y-auto'>
       <div id='overlay' className='bg-white/80 fixed inset-0'></div>
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/")}
         className='border border-primary-two rounded-full p-2 shadow fixed top-4 left-4 z-20 bg-white'>
         <IoMdArrowBack
           fontSize={30}

@@ -18,7 +18,7 @@ const LoginCard = () => {
   return (
     <Tabs
       defaultValue='login'
-      className='w-[95vw] sm:w-[600px] max-w-md relative '>
+      className='w-[95vw] sm:w-[600px] max-w-md relative mt-16 sm:mt-0'>
       <TabsList className='grid w-full grid-cols-2 h-11'>
         <TabsTrigger value='login' className='h-full'>
           Login

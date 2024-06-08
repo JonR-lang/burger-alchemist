@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import useMediaQuery from "@/hooks/useMediaQuery";
+import useMediaQuery from "@/hooks/utilityHooks/useMediaQuery";
 import { Button } from "@/components/ui/button";
 import { MdEdit } from "react-icons/md";
 
@@ -25,8 +25,13 @@ import {
 } from "@/components/ui/drawer";
 
 import EditAccountForm from "./EditAccountForm";
+import { User } from "@/types/User.types";
 
-const EditAccount = () => {
+type EditAccountProp = {
+  user: User;
+};
+
+const EditAccount = ({ user }: EditAccountProp) => {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -46,7 +51,7 @@ const EditAccount = () => {
               Make changes to your profile here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
-          <EditAccountForm />
+          <EditAccountForm user={user} setOpen={setOpen} />
         </DialogContent>
       </Dialog>
     );
@@ -68,7 +73,7 @@ const EditAccount = () => {
           </DrawerDescription>
         </DrawerHeader>
         <div className='px-3'>
-          <EditAccountForm />
+          <EditAccountForm user={user} setOpen={setOpen} />
         </div>
         <DrawerFooter className='pt-2'>
           <DrawerClose asChild>

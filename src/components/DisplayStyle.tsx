@@ -3,7 +3,7 @@ import { BiGridVertical } from "react-icons/bi";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 
-import useMediaQuery from "@/hooks/useMediaQuery";
+import useMediaQuery from "@/hooks/utilityHooks/useMediaQuery";
 import { useEffect } from "react";
 
 export type GridProp = {

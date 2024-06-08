@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type BannerProp = {
   template: string;
@@ -13,7 +13,10 @@ type BannerProp = {
     text: {
       heading: string;
       body: string;
-      link: string;
+      link: {
+        callToAction: string;
+        url: string;
+      };
     };
   };
 };
@@ -26,6 +29,7 @@ const BannerTemplate = ({
     text: { heading, body, link },
   },
 }: BannerProp) => {
+  const navigate = useNavigate();
   return (
     <div
       style={{ background: neutral }}
@@ -61,18 +65,18 @@ const BannerTemplate = ({
       </p>
 
       {/* link */}
-      <Link
+      <button
         style={{ color: textBody }}
-        to='/'
-        className={`z-30 text-sm ${
+        onClick={() => navigate(link.url)}
+        className={`block underline absolute z-[30] cursor-pointer text-sm ${
           template === "one" &&
-          `absolute bottom-2 left-2 md:left-auto md:right-3 `
-        } ${template === "two" && `absolute bottom-2 right-2 `} ${
+          `bottom-12 md:bottom-7 left-2 md:left-auto md:right-10 `
+        } ${template === "two" && `bottom-8 right-2 `} ${
           template === "three" &&
-          `absolute bottom-6 lg:bottom-2 right-[50%] lg:right-2 translate-x-[50%] lg:translate-x-0 `
+          `bottom-7 right-[50%] lg:right-7 translate-x-[50%] lg:translate-x-0 `
         }`}>
-        {link}
-      </Link>
+        {link.callToAction}
+      </button>
 
       {/* picture */}
       <figure
@@ -95,7 +99,7 @@ const BannerTemplate = ({
           } `}></div>
         <img
           src={picture}
-          alt='veggie-burger'
+          alt={heading}
           className={`size-full object-contain ${
             template === "three" && "relative top-5"
           }`}

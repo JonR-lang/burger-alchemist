@@ -4,7 +4,7 @@ import ReviewForm from "./ReviewForm";
 
 import { FiEdit3 } from "react-icons/fi";
 
-import useMediaQuery from "@/hooks/useMediaQuery";
+import useMediaQuery from "@/hooks/utilityHooks/useMediaQuery";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -27,7 +27,11 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-const WriteReview = () => {
+type WriteReviewProp = {
+  productId: string;
+};
+
+const WriteReview = ({ productId }: WriteReviewProp) => {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -50,7 +54,7 @@ const WriteReview = () => {
               and what you don't, ultimately helping us serve you better.
             </DialogDescription>
           </DialogHeader>
-          <ReviewForm />
+          <ReviewForm productId={productId} setOpen={setOpen} />
         </DialogContent>
       </Dialog>
     );
@@ -74,7 +78,7 @@ const WriteReview = () => {
             and what you don't, ultimately helping us serve you better.
           </DrawerDescription>
         </DrawerHeader>
-        <ReviewForm className='px-4' />
+        <ReviewForm className='px-4' productId={productId} setOpen={setOpen} />
         <DrawerFooter className='pt-2'>
           <DrawerClose asChild>
             <Button variant='outline'>Cancel</Button>

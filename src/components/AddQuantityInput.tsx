@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import CartAlert from "./CartAlert";
-import AlertDialogTwo from "@/components/AlertDialogTwo";
+import AlertDialogCartOptions from "@/components/AlertDialogCartOptions";
 
-type ClassProp = {
+type Prop = {
   className?: string;
+  value: number;
+  setValue: (value: number | ((prevValue: number) => number)) => void;
+  product?: {
+    productId: string;
+    subtotal: number;
+  };
 };
 
-const AddQuantityInput = ({ className }: ClassProp) => {
-  const [value, setValue] = useState(1);
+const AddQuantityInput = ({ className, value, setValue, product }: Prop) => {
   const [showAlert, setShowAlert] = useState(false);
   const { pathname } = useLocation();
 
@@ -21,13 +25,15 @@ const AddQuantityInput = ({ className }: ClassProp) => {
         <button
           className='size-8'
           onClick={() => {
-            setValue((prevValue) => (prevValue > 1 ? prevValue - 1 : 1));
+            setValue((prevValue: number) =>
+              prevValue > 1 ? prevValue - 1 : 1
+            );
             value <= 1 && pathnames.includes(pathname) && setShowAlert(true);
           }}>
           -
         </button>
         <input
-          type='text'
+          type='number'
           className='border size-8 focus:outline-none text-center'
           value={value}
           onChange={(e) =>
@@ -41,7 +47,8 @@ const AddQuantityInput = ({ className }: ClassProp) => {
         </button>
       </div>
       {showAlert && (
-        <AlertDialogTwo
+        <AlertDialogCartOptions
+          product={product}
           variant='remove'
           showAlert={showAlert}
           setShowAlert={setShowAlert}

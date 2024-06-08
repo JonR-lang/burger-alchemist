@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -65,14 +67,18 @@ export default function Categories() {
         {dietaryPreferences.map(({ name, Icon }, i) => (
           <SwiperSlide
             key={i}
-            className='w-32 aspect-square bg-white rounded-xl grid place-content-center place-items-center shadow-sm border'>
-            <div
-              className={`${
-                Math.random() > 0.5 ? "text-accent-one" : "text-primary-two"
-              } drop-shadow`}>
-              <Icon fontSize={40} />
-            </div>
-            <p className='text-bold text-sm mt-2 text-gray-500/70'>{name}</p>
+            className='w-32 aspect-square bg-white rounded-xl shadow-sm border'>
+            <Link
+              to={`products?dietaryPreference=${name}`}
+              className='grid place-content-center place-items-center size-full'>
+              <div
+                className={`${
+                  Math.random() > 0.5 ? "text-accent-one" : "text-primary-two"
+                } drop-shadow`}>
+                <Icon fontSize={40} />
+              </div>
+              <p className='text-bold text-sm mt-2 text-gray-500/70'>{name}</p>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

@@ -31,16 +31,14 @@ export type ProductCardDetails = {
   ingredients: { name: string; type: string }[];
 };
 
-export type ProductCardType = {
-  _id: string;
-  name: string;
-  slug: string;
-  images: {
-    publicId: string;
-    url: string;
-    _id: string;
-  }[];
-  price: number;
-  description: string;
-  totalRatings: number;
-};
+export type ProductCardType = Pick<
+  ProductCardDetails,
+  | "_id"
+  | "name"
+  | "slug"
+  | "images"
+  | "price"
+  | "description"
+  | "totalRatings"
+  | "size"
+>;

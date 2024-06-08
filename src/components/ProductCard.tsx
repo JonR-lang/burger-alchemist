@@ -1,11 +1,16 @@
-import { CiHeart } from "react-icons/ci";
-import { TbShoppingBagPlus } from "react-icons/tb";
+import { PiHeartFill, PiHeartLight } from "react-icons/pi";
+import { TbShoppingBagPlus, TbShoppingBagCheck } from "react-icons/tb";
 import { useLocation, Link } from "react-router-dom";
 import { Rating } from "@smastrom/react-rating";
 import { ProductCardType } from "@/types/ProductCard.types";
-
+import { addToCart, removeFromCart } from "@/features/cart/cartSlice";
+import { RootState } from "@/store/store";
 import { useToast } from "@/components/ui/use-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { useWishlistData } from "@/hooks/queryhooks/useWishlistData";
+import { useToggleWishlist } from "@/hooks/queryhooks/useToggleWishlist";
 
+//TYPES
 export type ProductCardProp = {
   grid?: number;
   page?: number;
@@ -17,16 +22,94 @@ const excludedPathnames = ["/wishlist", "/products"];
 
 const ProductCard = ({
   grid,
-  data: { name, images, slug, totalRatings, price, description, _id: id },
+  data: { name, images, slug, totalRatings, price, description, size, _id: id },
 }: ProductCardProp) => {
+  const savedUser = useSelector((state: RootState) => state.auth.user);
+  const cart = useSelector((state: RootState) => state.cart);
+
+  const { data: wishlist } = savedUser ? useWishlistData("_id") : { data: [] };
+  const { mutate: toggleWishlist } = useToggleWishlist();
+
   const { pathname } = useLocation();
   const { toast } = useToast();
+  const dispatch = useDispatch();
 
-  const handleClick = () => {
+  //Check if the product exists in the cart.
+  const cartIndex = cart.items
+    ? cart.items.findIndex((item) => item.product === id)
+    : -1;
+
+  //Check if the product is in the user's wishlist
+  const wishlistIndex = wishlist
+    ? wishlist.findIndex((item: string) => item === id)
+    : -1;
+
+  const handleAddToCart = (
+    product: string,
+    name: string,
+    price: number,
+    image: string,
+    totalRatings: number,
+    size: string
+  ) => {
+    const quantity = 1;
+    const subtotal = quantity * price;
     toast({
       variant: "yellowBorder",
-      description: "Item has been added to cart.",
+      description:
+        cartIndex < 0
+          ? `You added ${name} to your cart!`
+          : `You removed ${name} from your cart!`,
     });
+
+    cartIndex < 0
+      ? dispatch(
+          addToCart({
+            product,
+            name,
+            price,
+            quantity,
+            subtotal,
+            image,
+            totalRatings,
+            size,
+          })
+        )
+      : dispatch(removeFromCart({ product, subtotal }));
+  };
+
+  const handleToggleWishlist = () => {
+    toggleWishlist(
+      {
+        _id: id,
+        name,
+        images,
+        slug,
+        description,
+        totalRatings,
+        price,
+        size,
+      },
+      {
+        onSuccess: (_data, variables) => {
+          toast({
+            variant: "yellowBorder",
+            description: `${variables.name} has been ${
+              wishlistIndex < 0
+                ? "added to your wishlist"
+                : "removed from your wishlist"
+            }`,
+          });
+        },
+        onError: (error) => {
+          console.log(error);
+          toast({
+            variant: "destructive",
+            description: error.message,
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -95,10 +178,33 @@ const ProductCard = ({
             </span>
           </span>
           <button
-            className='sm:-mt-[7px] text-accent-one'
-            onClick={handleClick}>
-            <TbShoppingBagPlus fontSize={25} aria-hidden={true} />
-            <span className='sr-only'>Add to Cart</span>
+            className={`sm:-mt-[7px] ${
+              cartIndex < 0
+                ? "text-accent-one hover:text-neutral-800 rounded"
+                : "text-neutral-800 hover:text-accent-one"
+            }`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleAddToCart(
+                id,
+                name,
+                price,
+                images[0].url,
+                totalRatings,
+                size
+              );
+            }}>
+            {cartIndex < 0 ? (
+              <TbShoppingBagPlus fontSize={25} aria-hidden={true} />
+            ) : (
+              <TbShoppingBagCheck fontSize={25} aria-hidden={true} />
+            )}
+            {cartIndex < 0 ? (
+              <span className='sr-only'>Add to Cart</span>
+            ) : (
+              <span className='sr-only'>Product in your cart</span>
+            )}
           </button>
         </div>
       </div>
@@ -107,8 +213,19 @@ const ProductCard = ({
         className={`flex flex-col items-center gap-1 h-full ${
           grid !== 1 && "hidden"
         }`}>
-        <button className={` text-black/20 `}>
-          <CiHeart fontSize={27} />
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleToggleWishlist();
+          }}
+          className={` text-black/20 `}>
+          <span className='sr-only'>Add to Wishlist</span>
+          {wishlistIndex < 0 ? (
+            <PiHeartLight fontSize={27} />
+          ) : (
+            <PiHeartFill fontSize={27} className='text-red-600' />
+          )}
         </button>
         <div
           className={`w-4 sm:w-5 ${
@@ -128,10 +245,20 @@ const ProductCard = ({
       {/* This wishList button is for the grid display, it disappears in the list display. */}
 
       <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleToggleWishlist();
+        }}
         className={`absolute right-1 top-1 z-20 text-black/20 ${
           grid === 1 && "hidden"
         }`}>
-        <CiHeart fontSize={27} />
+        <span className='sr-only'>Add to Wishlist</span>
+        {wishlistIndex < 0 ? (
+          <PiHeartLight fontSize={27} className='hover:text-red-600' />
+        ) : (
+          <PiHeartFill fontSize={27} className='text-red-600' />
+        )}
       </button>
     </Link>
   );

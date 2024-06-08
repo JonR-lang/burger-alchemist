@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import HeroBurger from "../assets/hero-1.png";
 import Button from "./Button";
 import Blob from "../assets/blob.svg";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <section className='flex w-full mx-auto items-center justify-center h-[600px] md:-mt-24 flex-col-reverse md:flex-row relative'>
       <div className='sm:flex-1 sm:h-full mb-5 sm:mb-0 flex flex-col gap-5 xl:gap-6 justify-start md:justify-center text-center md:text-start -mt-4 sm:-mt-0 relative z-20'>
@@ -15,7 +17,10 @@ const Hero = () => {
           are crafted with passion and made with lots of love with the freshest
           ingredients. Experience the difference, order now and indulge.
         </p>
-        <Button text='Let-tuce Get You a Burger!' />
+        <Button
+          text='Let-tuce Get You a Burger!'
+          clickFunc={() => navigate("/products")}
+        />
       </div>
       <figure className='flex-1 w-full relative h-full flex items-center justify-center z-0 overflow-hidden'>
         <h1 className='absolute z-20 font-rubik-dirt text-5xl xl:text-6xl lowercase text-primary-two blend-text top-2 left-2 md:hidden'>

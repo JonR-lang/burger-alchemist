@@ -1,6 +1,7 @@
 import html2canvas from "html2canvas";
+import { format } from "date-fns";
 import jsPDF from "jspdf";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import {
   Table,
@@ -10,11 +11,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Order, OrderItem } from "@/types/Order.types";
 
-const MyDocument = () => (
+type OrderProp = {
+  order: Order;
+};
+
+const MyDocument = ({ order }: OrderProp) => (
   <div className='mx-auto my-12 w-full max-w-[800px] px-6'>
     <div>
-      <h1 className='text-xl font-semibold'>Order Id: #9172963</h1>
+      <h1 className='text-xl font-semibold'>Order Id: {order._id}</h1>
       <Table className='w-full text-sm border-b'>
         <TableHeader className='text-black border-b-2 border-b-black'>
           <TableRow className='text-black'>
@@ -25,57 +31,86 @@ const MyDocument = () => (
           </TableRow>
         </TableHeader>
         <TableBody>
-          {Array(4)
-            .fill(4)
-            .map((item: any, i) => (
-              <TableRow key={i}>
-                <TableCell>{"Maple Crimson Burger"}</TableCell>
-                <TableCell>{"$300"}</TableCell>
-                <TableCell>{"2"}</TableCell>
-                <TableCell className='text-right'>{"$500"}</TableCell>
-              </TableRow>
-            ))}
+          {order.items.map((item: OrderItem, i: number) => (
+            <TableRow key={i}>
+              <TableCell>{item.product.name}</TableCell>
+              <TableCell>
+                ${(item.subTotal / item.quantity).toFixed(2)}
+              </TableCell>
+              <TableCell>{item.quantity}</TableCell>
+              <TableCell className='text-right'>
+                ${item.subTotal.toFixed(2)}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
 
       <div className='flex justify-between items-center mt-10'>
-        <p>Fullname:</p>
-        <p>{"Johnny Iroele"}</p>
+        <p>Created</p>
+        <p className='font-semibold'>{format(order.createdAt, "PPP")}</p>
       </div>
-      <div className='flex justify-between items-center'>
+
+      <div className='flex justify-between items-center mt-10'>
         <p>Fullname:</p>
-        <p>{"Johnny Iroele"}</p>
+        <p>{`${order.orderedBy.firstName} ${order.orderedBy.lastName}`}</p>
+      </div>
+
+      <div className='flex justify-between items-center mt-10'>
+        <p>Status</p>
+        <p className='font-semibold'>{order.status}</p>
+      </div>
+
+      {order.status === "delivered" && (
+        <div className='flex justify-between items-center mt-10'>
+          <p>Delivered</p>
+          <p className='font-semibold'>{format(order.updatedAt, "PPP")}</p>
+        </div>
+      )}
+
+      <div className='flex justify-between items-center mt-10'>
+        <p>
+          Total <span>{"(incl. fees)"}</span>
+        </p>
+        <p className='font-semibold'>${order.totalAmount.toFixed(2)}</p>
       </div>
     </div>
   </div>
 );
 
-const PDFDownload = () => {
+const PDFDownload = ({ order }: OrderProp) => {
+  const [isLoading, setIsLoading] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
 
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
+    setIsLoading(true);
     const input = pdfRef.current;
     if (!input) return;
-    html2canvas(input).then((canvas) => {
-      const pdf = new jsPDF();
-      const imgData = canvas.toDataURL("image/png");
-      const imgWidth = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const canvas = await html2canvas(input);
 
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-      pdf.save("download.pdf");
-    });
+    const pdf = new jsPDF();
+    const imgData = canvas.toDataURL("image/jpeg", 0.5);
+    const imgWidth = 210;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
+    pdf.save(`Order_${order._id}.pdf`);
+    setIsLoading(false);
   };
   return (
     <div className='flex flex-col gap-3'>
       <div
         aria-hidden={true}
         ref={pdfRef}
-        className='fixed bottom-[999999] w-[8.27in]'>
-        <MyDocument />
+        className='fixed bottom-[999999%] w-[8.27in]'>
+        <MyDocument order={order} />
       </div>
-      <Button onClick={downloadPDF} className='my-4 w-full max-w-md mx-auto'>
-        Download PDF
+      <Button
+        onClick={downloadPDF}
+        className='my-4 w-full max-w-md mx-auto'
+        disabled={isLoading}
+        aria-disabled={isLoading}>
+        {isLoading ? "Downloading..." : "Download PDF"}
       </Button>
     </div>
   );
