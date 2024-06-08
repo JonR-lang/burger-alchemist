@@ -20,9 +20,6 @@ import useFilterBySize from "@/hooks/filterhooks/useFilterBySize";
 
 const MobileFilterBy = () => {
   const [searchParams] = useSearchParams();
-  //Availability
-  const [inStock, setInStock] = useState(false);
-  const [outOfStock, setOutOfStock] = useState(false);
 
   //Price
   const [priceFrom, setPriceFrom] = useState(() => {
@@ -47,14 +44,10 @@ const MobileFilterBy = () => {
   const { handleFilterbySize } = useFilterBySize();
 
   const handleInStockChange = () => {
-    setInStock(true);
-    setOutOfStock(false);
     handleFilterByAvailability("in-stock");
   };
 
   const handleOutOfStockChange = () => {
-    setOutOfStock(true);
-    setInStock(false);
     handleFilterByAvailability("out-of-stock");
   };
 
