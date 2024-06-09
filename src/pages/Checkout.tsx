@@ -72,6 +72,8 @@ const Checkout = () => {
   }, [useSavedAddress]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const newTab = window.open("", "_blank");
+
     const items = cart.items.map((item) => ({
       product: item.product,
       quantity: item.quantity.toString(), //server expects string.
@@ -92,7 +94,9 @@ const Checkout = () => {
 
         setTimeout(() => {
           // window.location.replace(data.authorizationUrl);
-          window.open(data.authorizationUrl, "_blank");
+          if (newTab) {
+            newTab.location.href = data.authorizationUrl;
+          }
           navigate("/cart");
         }, 1000);
 
@@ -107,6 +111,7 @@ const Checkout = () => {
               });
             },
             onError: () => {
+              newTab?.close();
               toast({
                 description: "There was an error saving address",
               });
@@ -187,7 +192,7 @@ const Checkout = () => {
           />
           <Button
             type='submit'
-            className='mt-4 bg-green-600 hover:bg-green-400'
+            className='mt-4 hover:bg-green-600'
             disabled={isPlacingOrder}
             aria-disabled={isPlacingOrder}>
             Pay

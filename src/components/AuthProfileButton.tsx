@@ -8,7 +8,22 @@ import { RootState } from "@/store/store";
 
 const AuthProfileButton = () => {
   const savedUser = useSelector((state: RootState) => state.auth.user);
-  const { data: user } = useUserData(savedUser ? savedUser.id : null);
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useUserData(savedUser ? savedUser.id : null);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    console.error("Error fetching user data:", error);
+    return <div>Error loading user data</div>;
+  }
+
+  console.log(user);
   return (
     <div>
       {savedUser && user ? (

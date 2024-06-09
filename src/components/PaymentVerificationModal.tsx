@@ -24,7 +24,7 @@ const websocketUrl = import.meta.env.VITE_WEBSOCKET_URL;
 const PaymentVerificationModal = ({ isOrderMade, setIsOrderMade }: pvmProp) => {
   const [verification, setVerification] = useState<
     "pending" | "success" | "error"
-  >("error");
+  >("pending");
   const [message, setMessage] = useState("");
   const [orderId, setOrderId] = useState("");
   const dispatch = useDispatch();

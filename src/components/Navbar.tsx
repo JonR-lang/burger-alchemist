@@ -62,8 +62,8 @@ const Navbar = ({ showMenu, setShowMenu }: ShowMenuProp) => {
   return (
     <div
       id='menu'
-      className={`fixed top-0 transition-[left] duration-300  ${
-        showMenu ? "left-0 bg-black/30 backdrop-blur-sm z-40" : "left-[-100%]"
+      className={`fixed top-0 transition-[left] duration-150  ${
+        showMenu ? "left-0 z-40" : "left-[-100%]"
       } md:static w-full h-full `}
       onClick={() => {
         setShowMenu(false);

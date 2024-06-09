@@ -53,7 +53,7 @@ const AlertDialogCartOptions = ({
           onClick={(e) => e.stopPropagation()}>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {variant === "reomve" ? "Remove item from cart?" : "Clear cart?"}
+              {variant === "remove" ? "Remove item from cart?" : "Clear cart?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {variant === "remove"

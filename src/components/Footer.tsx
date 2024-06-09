@@ -15,8 +15,8 @@ const Footer = () => {
       <div className='flex w-full justify-between items-center md:items-end py-4 flex-col-reverse md:flex-row gap-4 md:gap-8'>
         <div className='flex gap-3 flex-col md:flex-row text-sm text-center'>
           <Link to='/'>Home</Link>
-          <Link to='/kitchen'>Kitchen</Link>
-          <Link to='blog'>Blog</Link>
+          <Link to='/products'>Kitchen</Link>
+          <Link to='blogs'>Blog</Link>
           <Link to='/contact'>Contact</Link>
           <Link to='/#categories' onClick={() => scrollIntoView("categories")}>
             Categories
