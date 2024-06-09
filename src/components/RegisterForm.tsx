@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,8 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Checkbox } from "./ui/checkbox";
+import { useToast } from "./ui/use-toast";
+import { useRegisterUser } from "@/hooks/queryhooks/useRegisterUser";
 
 const formSchema = z.object({
   firstName: z
@@ -51,7 +53,9 @@ const RegisterForm = ({ className }: React.ComponentProps<"form">) => {
   const [value, setValue] = useState();
   const [checkedTOS, setCheckedTOS] = useState(false);
   const [showCountryCode, setShowCountryCode] = useState<boolean>(false);
-
+  const { mutate: registerUser, isPending } = useRegisterUser();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   useEffect(() => {
     setTimeout(() => {
       setShowCountryCode(true);
@@ -72,6 +76,17 @@ const RegisterForm = ({ className }: React.ComponentProps<"form">) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    registerUser(values, {
+      onSuccess: () => {
+        navigate("/login", { replace: true });
+      },
+      onError: (error) => {
+        toast({
+          title: error.message,
+          variant: "destructive",
+        });
+      },
+    });
     console.log(values);
   }
   return (
@@ -160,7 +175,7 @@ const RegisterForm = ({ className }: React.ComponentProps<"form">) => {
       </div>
       <Button
         type='submit'
-        disabled={!checkedTOS}
+        disabled={!checkedTOS || isPending}
         className='bg-accent-one h-11 sm:h-auto font-bold tracking-wider text-base md:text-sm mt-1'>
         Register
       </Button>
