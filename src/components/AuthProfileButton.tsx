@@ -14,16 +14,7 @@ const AuthProfileButton = () => {
     error,
   } = useUserData(savedUser ? savedUser.id : null);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
-  if (error) {
-    console.error("Error fetching user data:", error);
-    return <div>Error loading user data</div>;
-  }
-
-  console.log(user);
   return (
     <div>
       {savedUser && user ? (
