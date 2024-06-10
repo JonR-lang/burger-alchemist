@@ -17,11 +17,13 @@ const Popular = () => {
 
   if (isLoading)
     return (
-      <section className='flex gap-4 md:grid grid-cols-3 xl:grid-cols-4 '>
-        {[...Array(5)].map((_, i: number) => (
-          <SkeletonProductCard key={i} />
-        ))}
-      </section>
+      <div className='overflow-x-auto md:overflow-x-visible w-full'>
+        <section className='flex gap-4 md:grid grid-cols-3 xl:grid-cols-4 '>
+          {[...Array(5)].map((_, i: number) => (
+            <SkeletonProductCard key={i} />
+          ))}
+        </section>
+      </div>
     );
 
   return (

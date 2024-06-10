@@ -7,7 +7,7 @@ import SearchDialog from "./SearchDialog";
 import AuthProfileButton from "./AuthProfileButton";
 
 import { FaHamburger } from "react-icons/fa";
-import { PiHamburgerLight, PiHeartLight, PiHandbagThin } from "react-icons/pi";
+import { PiHamburgerLight, PiHeart, PiHandbag } from "react-icons/pi";
 
 import { RootState } from "@/store/store";
 
@@ -39,7 +39,7 @@ const Header = () => {
       <div className='flex w-full md:max-w-[210px] max-w-[160px] items-center justify-between'>
         <SearchDialog />
         <Link to='/wishlist'>
-          <PiHeartLight
+          <PiHeart
             fontSize={25}
             aria-hidden={true}
             className='hover:scale-125 transition duration-300'
@@ -47,7 +47,7 @@ const Header = () => {
           <span className='sr-only'>Go to Wishlist</span>
         </Link>
         <Link to={"/cart"} className='relative'>
-          <PiHandbagThin
+          <PiHandbag
             fontSize={25}
             aria-hidden={true}
             className='hover:scale-125 transition duration-300'
@@ -60,12 +60,12 @@ const Header = () => {
           )}
         </Link>
         <AuthProfileButton />
-        <div className='block md:hidden relative top-[2px]'>
-          <button onClick={() => setShowMenu(true)}>
-            <PiHamburgerLight fontSize={35} aria-hidden={true} />
-            <span className='sr-only'>Open Menu</span>
-          </button>
-        </div>
+        <button
+          onClick={() => setShowMenu(true)}
+          className='block md:hidden relative -ml-5'>
+          <PiHamburgerLight fontSize={31} aria-hidden={true} />
+          <span className='sr-only'>Open Menu</span>
+        </button>
       </div>
     </header>
   );

@@ -126,7 +126,7 @@ const Navbar = ({ showMenu, setShowMenu }: ShowMenuProp) => {
       {showMenu && (
         <button
           onClick={() => setShowMenu(false)}
-          className='z-10 bg-white/90 border border-primary-two rounded-full p-2 absolute top-4 right-3'>
+          className='z-10 bg-white shadow-lg border border-primary-two rounded-full p-2 absolute top-4 right-3'>
           <IoCloseOutline
             fontSize={30}
             aria-hidden={true}
