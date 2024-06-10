@@ -22,6 +22,10 @@ import { RootState } from "@/store/store";
 import Coupon from "@/components/Coupon";
 import { CouponType } from "@/types/Coupon.types";
 
+type CheckoutProp = {
+  newTab: any;
+};
+
 const formSchema = z.object({
   state: z.string().min(2, {
     message: "State must be at least 2 characters",
@@ -35,7 +39,7 @@ const formSchema = z.object({
   landmark: z.string().optional(),
 });
 
-const Checkout = () => {
+const Checkout = ({ newTab }: CheckoutProp) => {
   const [coupon, setCoupon] = useState<CouponType>(null);
   const savedUser = useSelector((state: RootState) => state.auth.user);
   const [defaultFormValues] = useState({
@@ -72,7 +76,8 @@ const Checkout = () => {
   }, [useSavedAddress]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const newTab = window.open("", "_blank");
+    newTab.current = window.open("", "_blank");
+    console.log(newTab);
 
     const items = cart.items.map((item) => ({
       product: item.product,
@@ -84,7 +89,6 @@ const Checkout = () => {
       address: values,
       coupon: coupon ? coupon.coupon.name : undefined,
     };
-    console.log(order);
     placeOrder(order, {
       onSuccess: (data) => {
         setCoupon(null);
@@ -94,8 +98,8 @@ const Checkout = () => {
 
         setTimeout(() => {
           // window.location.replace(data.authorizationUrl);
-          if (newTab) {
-            newTab.location.href = data.authorizationUrl;
+          if (newTab.current) {
+            newTab.current.location.href = data.authorizationUrl;
           }
           navigate("/cart");
         }, 1000);
@@ -111,7 +115,7 @@ const Checkout = () => {
               });
             },
             onError: () => {
-              newTab?.close();
+              newTab.current.close();
               toast({
                 description: "There was an error saving address",
               });

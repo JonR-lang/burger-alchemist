@@ -18,10 +18,15 @@ import { clearCart } from "@/features/cart/cartSlice";
 type pvmProp = {
   isOrderMade: boolean;
   setIsOrderMade: (value: boolean) => void;
+  newTab: any;
 };
 
 const websocketUrl = import.meta.env.VITE_WEBSOCKET_URL;
-const PaymentVerificationModal = ({ isOrderMade, setIsOrderMade }: pvmProp) => {
+const PaymentVerificationModal = ({
+  isOrderMade,
+  setIsOrderMade,
+  newTab,
+}: pvmProp) => {
   const [verification, setVerification] = useState<
     "pending" | "success" | "error"
   >("pending");
@@ -42,6 +47,8 @@ const PaymentVerificationModal = ({ isOrderMade, setIsOrderMade }: pvmProp) => {
     });
 
     socket.on("paymentVerified", (data) => {
+      console.log(newTab);
+      newTab.current.close();
       setVerification("success");
       setMessage(data.message);
       setOrderId(data.orderId);
@@ -57,7 +64,7 @@ const PaymentVerificationModal = ({ isOrderMade, setIsOrderMade }: pvmProp) => {
   }, []);
 
   useEffect(() => {
-    if (timer > 20) {
+    if (timer > 20 && verification !== "success") {
       setVerification("error");
       stopTimer();
     }

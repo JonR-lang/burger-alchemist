@@ -78,7 +78,7 @@ const RegisterForm = ({ className }: React.ComponentProps<"form">) => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     registerUser(values, {
       onSuccess: () => {
-        navigate("/login", { replace: true });
+        navigate("/", { replace: true });
       },
       onError: (error) => {
         toast({

@@ -16,7 +16,11 @@ import PaymentVerificationModal from "@/components/PaymentVerificationModal";
 import AlertDialogCartOptions from "@/components/AlertDialogCartOptions";
 import { RootState } from "@/store/store";
 
-const Cart = () => {
+type CartProp = {
+  newTab: any;
+};
+
+const Cart = ({ newTab }: CartProp) => {
   const [showAlert, setShowAlert] = useState(false);
   const [isOrderMade, setIsOrderMade] = useLocalStorage("order", false);
   const cart = useSelector((state: RootState) => state.cart);
@@ -95,6 +99,7 @@ const Cart = () => {
         <PaymentVerificationModal
           isOrderMade={isOrderMade}
           setIsOrderMade={setIsOrderMade}
+          newTab={newTab}
         />
       )}
       {showAlert && (

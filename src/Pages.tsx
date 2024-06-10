@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import MainLayout from "./layouts/MainLayout";
@@ -22,6 +23,7 @@ const Pages = () => {
   const errorHandler = (error: Error, info: ErrorInfo) => {
     console.log("Logging", error, info);
   };
+  const newTab = useRef(null);
 
   return (
     <>
@@ -40,12 +42,12 @@ const Pages = () => {
             />
             <Route path='/blogs' element={<Blog />} />
             <Route path='/blogs/:id' element={<BlogDetails />} />
-            <Route path='/cart' element={<Cart />} />
+            <Route path='/cart' element={<Cart newTab={newTab} />} />
             <Route
               path='/checkout'
               element={
                 <ProtectedRoute>
-                  <Checkout />
+                  <Checkout newTab={newTab} />
                 </ProtectedRoute>
               }
             />
