@@ -77,7 +77,6 @@ const Checkout = ({ newTab }: CheckoutProp) => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     newTab.current = window.open("", "_blank");
-    console.log(newTab);
 
     const items = cart.items.map((item) => ({
       product: item.product,

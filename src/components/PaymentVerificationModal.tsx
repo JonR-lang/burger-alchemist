@@ -47,7 +47,6 @@ const PaymentVerificationModal = ({
     });
 
     socket.on("paymentVerified", (data) => {
-      console.log(newTab);
       newTab.current.close();
       setVerification("success");
       setMessage(data.message);
