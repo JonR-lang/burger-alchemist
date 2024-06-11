@@ -27,16 +27,16 @@ const OrderListItem = ({ data }: OrderListItemProp) => {
         <span> you ordered </span>
         {data.items.length === 1 &&
           data.items.map((item) => item.product.name) +
-            ` worth $${data.totalAmount}.`}
+            ` worth $${data.totalAmount.toFixed(2)}.`}
         {data.items.length === 2 &&
           data.items.map((item) => " " + item.product.name + " and") +
-            ` worth $${data.totalAmount}.`}
+            ` worth $${data.totalAmount.toFixed(2)}.`}
         {data.items.length > 2 &&
           data.items.slice(0, 2).map((item) => " " + item.product.name) +
-            ` and others worth $${data.totalAmount}.`}
+            ` and others worth $${data.totalAmount.toFixed(2)}.`}
       </p>
       <p className='leading-5 text-sm text-neutral-500'>
-        Amount Paid: ${data.totalAmount}
+        Amount Paid: ${data.totalAmount.toFixed(2)}
       </p>
       <div className='flex gap-1 items-center'>
         {data.status === "delivered" && (

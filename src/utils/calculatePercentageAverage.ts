@@ -8,5 +8,5 @@ export const calculatePercentageAverage = (
   );
   const identicalNumbersLength = identicalNumbers.length;
   const percent = (identicalNumbersLength / arrayLength) * 100;
-  return isNaN(percent) ? 0 : percent;
+  return isNaN(percent) ? 0 : percent.toFixed(0);
 };
