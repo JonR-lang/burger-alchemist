@@ -22,14 +22,25 @@ const Address = ({ id, address }: AddressProp) => {
             aria-hidden={true}
             className='text-neutral-500'
           />
-          <div>
-            <p className='text-neutral-500 italic'>
-              {`${address.street}, ${address.city}, ${address.state} state.`}
-            </p>
-            <p className='text-neutral-500 italic'>
-              Landmark: {address.landmark ? address.landmark : "None provided"}
-            </p>
-          </div>
+          {address.state && address.city && address.street ? (
+            <div>
+              <p className='text-neutral-500 italic'>
+                {`${address.street && address.street}, ${
+                  address.city && address.city
+                }, ${address.state && address.state} state.`}
+              </p>
+              <p className='text-neutral-500 italic'>
+                Landmark:{" "}
+                {address.landmark ? address.landmark : "None provided"}
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p className='text-neutral-500'>
+                No Address has been provided by you.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>
