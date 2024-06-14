@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Navbar from "./Navbar";
@@ -14,6 +14,7 @@ import { RootState } from "@/store/store";
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
   const cart = useSelector((state: RootState) => state.cart);
 
   const handleScroll = () => {
@@ -32,7 +33,7 @@ const Header = () => {
         isScrolled && "bg-white shadow"
       } px-4 sm:px-8 xl:rounded-b-xl`}>
       <Navbar showMenu={showMenu} setShowMenu={setShowMenu} />
-      <figure className='h-full absolute top-0 left-0 md:left-[50%] md:translate-x-[-50%] grid place-content-center text-primary-two drop-shadow-md px-4'>
+      <figure onClick={() => navigate('/')} className='h-full absolute top-0 left-0 md:left-[50%] md:translate-x-[-50%] grid place-content-center text-primary-two drop-shadow-md px-4'>
         <FaHamburger fontSize={50} aria-hidden={true} />
         <img src='' alt='logo' className='sr-only' />
       </figure>
